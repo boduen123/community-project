@@ -23,7 +23,24 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
-const API_URL = "http://localhost:5000/abaturage";
+// Create axios instance that always sends JWT if it exists
+const api = axios.create({
+  baseURL: "http://localhost:5000", // your backend URL
+});
+
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token"); // token saved at login
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// Use relative endpoint (baseURL is set above)
+const API_URL = "/abaturage";
 
 const Abaturage = () => {
   // State Management
@@ -144,14 +161,18 @@ const Abaturage = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(API_URL);
+      const res = await api.get(API_URL);
       setAbaturage(res.data);
       setFilteredData(res.data);
       calculateStats(res.data);
       showAlertMessage("Amakuru yagaruwe neza!", "info");
     } catch (err) {
       console.error("Error fetching residents:", err);
-      showAlertMessage("Habaye ikosa mu gusoma amakuru!", "danger");
+      if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+        showAlertMessage("Nta burenganzira: banza winjire (Login).", "danger");
+      } else {
+        showAlertMessage("Habaye ikosa mu gusoma amakuru!", "danger");
+      }
     } finally {
       setLoading(false);
     }
@@ -253,10 +274,10 @@ const Abaturage = () => {
 
     try {
       if (editingId) {
-        await axios.put(`${API_URL}/${editingId}`, form);
+        await api.put(`${API_URL}/${editingId}`, form);
         showAlertMessage("Umuturage yavuguruwe neza!", "success");
       } else {
-        await axios.post(API_URL, form);
+        await api.post(API_URL, form);
         showAlertMessage("Umuturage yashyizwemo neza!", "success");
       }
       setShow(false);
@@ -291,7 +312,7 @@ const Abaturage = () => {
     const person = abaturage.find((a) => a.umuturage_id === id);
     if (window.confirm(`Uremeza ko ushaka gusiba ${person?.izina_ribanza} ${person?.izina_risoza}?`)) {
       try {
-        await axios.delete(`${API_URL}/${id}`);
+        await api.delete(`${API_URL}/${id}`);
         showAlertMessage("Umuturage yasibwe neza!", "success");
         fetchData();
       } catch (err) {
@@ -458,12 +479,14 @@ const Abaturage = () => {
                 <p className="text-muted mb-1 small">Bariho</p>
                 <h3 className="fw-bold mb-0 text-success">{stats.present}</h3>
                 <ProgressBar
-                  now={(stats.present / stats.total) * 100}
+                  now={stats.total ? (stats.present / stats.total) * 100 : 0}
                   variant="success"
                   className="mt-2"
                   style={{ height: "6px" }}
                 />
-                <small className="text-muted">{((stats.present / stats.total) * 100).toFixed(1)}%</small>
+                <small className="text-muted">
+                  {stats.total ? ((stats.present / stats.total) * 100).toFixed(1) : 0}%
+                </small>
               </div>
               <div className="bg-success bg-opacity-10 p-3 rounded-circle">
                 <i className="bi bi-house-check-fill text-success" style={{ fontSize: "2rem" }}></i>
@@ -1221,7 +1244,8 @@ const Abaturage = () => {
         </Modal.Footer>
       </Modal>
 
-      <style jsx>{`
+      {/* FIXED STYLE: no jsx attribute */}
+      <style>{`
         .hover-card {
           transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
         }

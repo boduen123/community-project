@@ -274,6 +274,45 @@ const EnhancedStyles = () => (
       transform: scale(1.1) rotate(90deg);
       box-shadow: var(--shadow-xl);
     }
+    
+    /* New Styles for Settings FAB */
+    .settings-fab {
+      position: fixed;
+      bottom: 30px;
+      left: 30px;
+      z-index: 1000;
+    }
+
+    .settings-fab .dropdown-toggle {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: white;
+      color: #6b7280;
+      border: none;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      transition: var(--transition-fast);
+    }
+    
+    .settings-fab .dropdown-toggle::after {
+      display: none; /* Hide the default caret arrow */
+    }
+
+    .settings-fab .dropdown-toggle:hover {
+      transform: scale(1.1) rotate(45deg);
+      background: white;
+      color: #667eea;
+      box-shadow: var(--shadow-xl);
+    }
+
+    .dark-mode .settings-fab .dropdown-toggle {
+      background: rgba(30, 30, 45, 0.95);
+      color: #e4e4e7;
+    }
 
     .progress-ring {
       transform: rotate(-90deg);
@@ -299,6 +338,12 @@ const EnhancedStyles = () => (
       0% { background-position: 200% 0; }
       100% { background-position: -200% 0; }
     }
+
+    /* Logout Modal specific styles */
+    .logout-modal-content {
+      border: none;
+      border-left: 5px solid #dc3545;
+    }
   `}</style>
 );
 
@@ -314,6 +359,8 @@ function DashboardUmunyamabanga() {
   const [darkMode, setDarkMode] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showQuickAdd, setShowQuickAdd] = useState(false);
+  // NEW: State for logout confirmation
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
@@ -342,7 +389,13 @@ function DashboardUmunyamabanga() {
     fetchData();
   }, []);
 
+  // UPDATED: handleLogout triggers modal instead of direct logout
   const handleLogout = () => {
+    setShowLogoutConfirm(true);
+  };
+
+  // NEW: confirmLogout performs the actual logout action
+  const confirmLogout = () => {
     localStorage.clear();
     navigate("/");
   };
@@ -454,24 +507,7 @@ function DashboardUmunyamabanga() {
                       </Button>
                     </OverlayTrigger>
 
-                    {/* Settings */}
-                    <Dropdown align="end">
-                      <Dropdown.Toggle variant="light" className="rounded-circle">
-                        <i className="bi bi-gear fs-5"></i>
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu>
-                        <Dropdown.Item href="#">
-                          <i className="bi bi-person me-2"></i>Umwirondoro
-                        </Dropdown.Item>
-                        <Dropdown.Item href="#">
-                          <i className="bi bi-sliders me-2"></i>Igenamiterere
-                        </Dropdown.Item>
-                        <Dropdown.Divider />
-                        <Dropdown.Item onClick={handleLogout} className="text-danger">
-                          <i className="bi bi-box-arrow-right me-2"></i>Sohoka
-                        </Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
+                    {/* REMOVED DROPDOWN FROM HERE AND MOVED TO BOTTOM */}
                   </div>
                 </Col>
               </Row>
@@ -852,13 +888,34 @@ function DashboardUmunyamabanga() {
           </motion.div>
         </AnimatePresence>
 
-        {/* Floating Action Button */}
+        {/* Floating Action Button (Right Side - Existing) */}
         <button 
           className="floating-action-btn"
           onClick={() => setShowQuickAdd(true)}
         >
           <i className="bi bi-plus-lg"></i>
         </button>
+
+        {/* Settings Floating Button (Left Side - New) */}
+        <div className="settings-fab">
+          <Dropdown drop="up">
+            <Dropdown.Toggle variant="light">
+              <i className="bi bi-gear"></i>
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <Dropdown.Item href="#">
+                <i className="bi bi-person me-2"></i>Umwirondoro
+              </Dropdown.Item>
+              <Dropdown.Item href="#">
+                <i className="bi bi-sliders me-2"></i>Igenamiterere
+              </Dropdown.Item>
+              <Dropdown.Divider />
+              <Dropdown.Item onClick={handleLogout} className="text-danger">
+                <i className="bi bi-box-arrow-right me-2"></i>Sohoka
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </div>
 
         {/* Notifications Modal */}
         <Modal show={showNotifications} onHide={() => setShowNotifications(false)} centered>
@@ -927,6 +984,33 @@ function DashboardUmunyamabanga() {
             </div>
           </Modal.Body>
         </Modal>
+
+        {/* ADDED: Logout Confirmation Modal */}
+        <Modal 
+          show={showLogoutConfirm} 
+          onHide={() => setShowLogoutConfirm(false)} 
+          centered
+          contentClassName="logout-modal-content"
+        >
+          <Modal.Header closeButton className="border-0">
+            <Modal.Title className="text-danger">
+              <i className="bi bi-exclamation-triangle me-2"></i>
+              Gusohoka
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p className="mb-0">Uragirango usohoke muri sisitemu?</p>
+          </Modal.Body>
+          <Modal.Footer className="border-0">
+            <Button variant="light" onClick={() => setShowLogoutConfirm(false)}>
+              Oya, subira inyuma
+            </Button>
+            <Button variant="danger" onClick={confirmLogout}>
+              Yego, Sohoka
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
       </Container>
     </div>
   );

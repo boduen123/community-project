@@ -1,620 +1,656 @@
 import React, { useState, useEffect } from "react";
 import { Routes, Route, useNavigate, useParams, Link } from "react-router-dom";
 import axios from "axios";
+import { motion, AnimatePresence } from "framer-motion";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap-icons/font/bootstrap-icons.css"; // Added Bootstrap Icons
+import "bootstrap-icons/font/bootstrap-icons.css";
+
+// Placeholder imports for the dashboard components
 import Dashboard from "./page/Mudugudu";
 import DashboardBohejuru from "./components/Abayobozi bo hejuru";
 import DashboardIsibo from "./components/Isibodashboard";
 import DashboardUmunyamabanga from "./components/DashboardUmunyamabanga";
 
-// ===================== ENHANCED GLOBAL STYLES =====================
+// ===================== MODERN STYLES & ANIMATIONS =====================
 const GlobalStyles = () => (
   <style>{`
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
-    :root{
-      --bg-start:#007bff;
-      --bg-end:#00c6ff;
-      --card-bg: rgba(255,255,255,0.95);
-      --text:#1f2d3d;
-      --muted:#6b7a99;
-      --primary:#007bff;
-      --primary-700:#0056b3;
-      --success:#28a745;
-      --success-700:#1e7e34;
-      --shadow: 0 15px 35px rgba(0,0,0,0.2);
-      --radius: 20px;
+    :root {
+      --primary: #4f46e5; /* Indigo */
+      --primary-hover: #4338ca;
+      --secondary: #ec4899; /* Pink */
+      --bg-gradient: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%);
+      --glass-bg: rgba(255, 255, 255, 0.85);
+      --glass-border: 1px solid rgba(255, 255, 255, 0.5);
+      --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --radius: 16px;
       --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    html, body, #root { height: 100%; }
-    body { 
-      font-family: 'Poppins', sans-serif; 
-      background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
-      background-attachment: fixed;
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg-gradient);
       min-height: 100vh;
-      margin: 0;
-      padding: 0;
-      color: var(--text);
+      color: var(--text-main);
       overflow-x: hidden;
-      overflow-y: auto;
       position: relative;
     }
 
-    /* Animated background particles */
+    /* Animated Background Mesh */
     body::before {
       content: '';
       position: fixed;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(120, 200, 255, 0.2) 0%, transparent 50%);
+      animation: rotateBg 30s linear infinite;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    @keyframes rotateBg {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .page-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      position: relative;
+    }
+
+    /* Glassmorphism Card */
+    .glass-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: var(--glass-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      padding: 2.5rem;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .login-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      max-width: 1000px;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .brand-section {
+      background: rgba(255,255,255,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem;
+      position: relative;
+    }
+
+    .form-section {
+      padding: 3rem;
+      background: var(--glass-bg);
+      position: relative;
+    }
+
+    /* Loading Screen Styles */
+    .loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
-      background-image: 
-        radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 50%);
-      pointer-events: none;
-      animation: floatBackground 20s ease-in-out infinite;
-    }
-
-    @keyframes floatBackground {
-      0%, 100% { transform: translate(0, 0); }
-      50% { transform: translate(-20px, -20px); }
-    }
-
-    /* Wrapper helpers */
-    .page-shell {
-      min-height: 100vh;
+      background: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      z-index: 9999;
+      overflow: hidden;
     }
 
-    /* Enhanced Book animation */
-    .books { 
-      display: flex; 
-      justify-content: center; 
-      align-items: flex-end; 
-      gap: 30px;
-      margin-bottom: 40px;
-      flex-wrap: wrap;
-      padding: 0 16px;
+    .loading-bg-shapes {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
     }
-    .book { 
-      width: 120px; 
-      height: 160px; 
-      perspective: 1000px; 
+
+    .bg-shape {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      animation: floatShape 6s ease-in-out infinite;
+    }
+
+    .bg-shape:nth-child(1) {
+      width: 100px;
+      height: 100px;
+      top: 20%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .bg-shape:nth-child(2) {
+      width: 150px;
+      height: 150px;
+      top: 60%;
+      right: 15%;
+      animation-delay: 2s;
+    }
+
+    .bg-shape:nth-child(3) {
+      width: 80px;
+      height: 80px;
+      bottom: 30%;
+      left: 20%;
+      animation-delay: 4s;
+    }
+
+    @keyframes floatShape {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-30px) rotate(180deg); }
+    }
+
+    .loading-content {
       position: relative;
-      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
-      cursor: pointer;
-      transition: transform 0.3s ease;
+      z-index: 1;
+      text-align: center;
+      color: white;
     }
-    .book:hover { 
-      transform: translateY(-10px) scale(1.05); 
+
+    .logo-container {
+      margin-bottom: 2rem;
+      position: relative;
     }
-    .cover, .page { 
-      width:100%; 
-      height:100%; 
-      border-radius:8px; 
-      position:absolute; 
-      top:0; 
-      left:0;
-      transition: transform 0.5s ease;
-    }
-    .cover { 
-      background: linear-gradient(135deg, #0056b3, #007bff); 
-      z-index:3; 
-      box-shadow:
-        inset 0 0 20px rgba(255,255,255,0.2),
-        0 5px 15px rgba(0,0,0,0.4); 
-      transform-origin:left; 
-      animation:openCover 2s ease forwards;
+
+    .logo-circle {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.3);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
-      font-weight: 700;
-    }
-    .page { 
-      background: linear-gradient(to right, #ffffff, #f8f9fa); 
-      z-index:2; 
-      box-shadow:0 2px 8px rgba(0,0,0,0.25); 
-      transform-origin:left; 
-      animation:flipPage 2s ease forwards;
-    }
-    .book:nth-child(1) .cover { animation-delay:0.2s; }
-    .book:nth-child(1) .page { animation-delay:0.2s; }
-    .book:nth-child(2) .cover, .book:nth-child(2) .page { animation-delay:0.7s; }
-    .book:nth-child(3) .cover, .book:nth-child(3) .page { animation-delay:1.2s; }
-    .book:nth-child(4) .cover, .book:nth-child(4) .page { animation-delay:1.7s; }
-
-    @keyframes openCover {
-      0%{transform:rotateY(0deg);}
-      50%{transform:rotateY(-160deg) scale(1.05);}
-      100%{transform:rotateY(-160deg) scale(1);}
-    }
-    @keyframes flipPage {
-      0%{transform:rotateY(0deg);}
-      50%{transform:rotateY(-160deg) scale(1.02);}
-      100%{transform:rotateY(-160deg) scale(1);}
-    }
-
-    /* Enhanced Fade-in */
-    .fade-in { 
-      opacity:0; 
-      animation:fadeInForm 1.1s ease forwards; 
-    }
-    @keyframes fadeInForm { 
-      from {opacity:0; transform:translateY(30px) scale(0.95);} 
-      to {opacity:1; transform:translateY(0) scale(1);} 
-    }
-
-    /* Enhanced Welcome */
-    .welcome-text { 
-      color:#fff; 
-      font-size:2.2rem; 
-      font-weight:700; 
-      margin-top:18px; 
-      text-shadow: 
-        0 2px 10px rgba(0,0,0,0.2),
-        0 4px 20px rgba(0,0,0,0.1);
-      animation:pulse 2s infinite alternate;
-      padding: 0 16px;
-      text-align: center;
-      background: linear-gradient(45deg, #fff, #e3f2fd);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    @keyframes pulse { 
-      from{opacity:0.8; transform:scale(1);} 
-      to{opacity:1; transform:scale(1.04);} 
-    }
-
-    /* Enhanced Skip animation */
-    .skip-btn {
-      margin-top: 18px;
-      background: rgba(255,255,255,0.2);
-      color: #fff;
-      border: 1px solid rgba(255,255,255,0.45);
-      padding: 12px 24px;
-      border-radius: 30px;
-      cursor: pointer;
-      backdrop-filter: blur(10px);
-      transition: var(--transition);
-      font-weight: 500;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .skip-btn:hover { 
-      background: rgba(255,255,255,0.35); 
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-    }
-    .skip-btn i {
-      transition: transform 0.3s ease;
-    }
-    .skip-btn:hover i {
-      transform: translateX(5px);
-    }
-
-    /* Enhanced Auth card styling */
-    .auth-card { 
-      width:100%; 
-      max-width:460px; 
-      background: var(--card-bg); 
-      padding:40px; 
-      border-radius:var(--radius); 
-      box-shadow:
-        0 20px 60px rgba(0,0,0,0.3),
-        0 0 0 1px rgba(255,255,255,0.1) inset; 
-      backdrop-filter: blur(20px);
-      text-align:center;
-      border: 1px solid rgba(255,255,255,0.25);
-      margin: 0 16px;
+      margin: 0 auto 1rem;
       position: relative;
       overflow: hidden;
     }
-    
-    .auth-card::before {
+
+    .logo-icon {
+      font-size: 3rem;
+      color: white;
+      position: relative;
+      z-index: 2;
+    }
+
+    .logo-ring {
+      position: absolute;
+      top: -5px;
+      left: -5px;
+      right: -5px;
+      bottom: -5px;
+      border: 2px solid transparent;
+      border-radius: 50%;
+      border-top: 2px solid white;
+      animation: spin 2s linear infinite;
+    }
+
+    .loading-text {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      opacity: 0;
+      animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    .loading-subtitle {
+      font-size: 1rem;
+      opacity: 0.8;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeInUp 0.8s ease-out 0.3s forwards;
+    }
+
+    .progress-container {
+      width: 300px;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, white, rgba(255, 255, 255, 0.7));
+      border-radius: 10px;
+      width: 0;
+      position: relative;
+    }
+
+    .progress-bar::after {
       content: '';
       position: absolute;
       top: 0;
-      left: -100%;
-      width: 100%;
-      height: 3px;
-      background: linear-gradient(90deg, transparent, var(--primary), transparent);
-      animation: loadingBar 2s linear infinite;
-    }
-    
-    @keyframes loadingBar {
-      0% { left: -100%; }
-      100% { left: 100%; }
-    }
-    
-    .auth-card h3 { 
-      margin-bottom:30px; 
-      font-weight:700;
-      font-size: 2rem;
-      background: linear-gradient(135deg, var(--primary), var(--primary-700));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-    }
-
-    .auth-card h3 i {
-      font-size: 2.2rem;
-      -webkit-text-fill-color: var(--primary);
-    }
-
-    /* Enhanced form controls */
-    .input-group {
-      position: relative;
-      margin-bottom: 20px;
-    }
-
-    .input-group-icon {
-      position: absolute;
-      left: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--muted);
-      transition: var(--transition);
-      z-index: 5;
-      font-size: 1.1rem;
-    }
-
-    .form-control, .form-select { 
-      width:100%; 
-      padding:15px 15px 15px 45px; 
-      border-radius:12px; 
-      border:2px solid #e0e0e0; 
-      transition:var(--transition); 
-      background: rgba(255,255,255,0.9);
-      font-size: 1rem;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    }
-    
-    .form-control:focus, .form-select:focus { 
-      outline:none; 
-      border-color:var(--primary); 
-      box-shadow:
-        0 0 0 4px rgba(0,123,255,0.15),
-        0 6px 12px rgba(0,0,0,0.1);
-      transform: translateY(-2px);
-      background: #fff;
-    }
-    
-    .form-control:focus ~ .input-group-icon,
-    .form-select:focus ~ .input-group-icon {
-      color: var(--primary);
-      transform: translateY(-50%) scale(1.1);
-    }
-
-    .form-control.is-invalid {
-      border-color: #dc3545;
-      animation: shake 0.5s;
-      padding-right: 45px;
-    }
-    
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
-      20%, 40%, 60%, 80% { transform: translateX(3px); }
-    }
-
-    /* Enhanced buttons */
-    .btn-primary, .btn-success { 
-      padding:16px; 
-      font-weight:600; 
-      border:none; 
-      border-radius:12px; 
-      transition:var(--transition); 
-      width:100%;
-      font-size: 1.05rem;
-      letter-spacing: 0.5px;
-      cursor: pointer;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-    
-    .btn-primary::before, .btn-success::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.3);
-      transform: translate(-50%, -50%);
-      transition: width 0.6s, height 0.6s;
-    }
-    
-    .btn-primary:hover::before, .btn-success:hover::before {
-      width: 300px;
-      height: 300px;
-    }
-    
-    .btn-primary { 
-      background: linear-gradient(135deg, var(--primary), var(--primary-700)); 
-      color:#fff; 
-    }
-    .btn-primary:hover { 
-      background: linear-gradient(135deg, var(--primary-700), #004085);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(0,123,255,0.3);
-    }
-    .btn-success { 
-      background: linear-gradient(135deg, var(--success), #20c997); 
-      color:#fff; 
-    }
-    .btn-success:hover { 
-      background: linear-gradient(135deg, var(--success-700), #1e7e34);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(40,167,69,0.3);
-    }
-    
-    .btn:active {
-      transform: translateY(0);
-    }
-
-    /* Enhanced links */
-    a { 
-      color: #fff; 
-      text-decoration:none; 
-      font-weight: 500;
-      transition: var(--transition);
-      position: relative;
-    }
-    .auth-card a { 
-      color: var(--primary); 
-      text-decoration: none;
-    }
-    .auth-card a::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
       left: 0;
-      width: 0;
-      height: 2px;
-      background: var(--primary);
-      transition: width 0.3s ease;
-    }
-    .auth-card a:hover::after {
-      width: 100%;
-    }
-    a:hover { 
-      opacity: 0.9; 
-      color: var(--primary-700);
+      bottom: 0;
+      right: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      animation: shimmer 2s infinite;
     }
 
-    /* Enhanced Book cover content */
-    .book-cover-content { 
-      font-size: 2.5rem; 
-      text-align: center; 
-      transition: transform 0.3s ease; 
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
-    }
-    .book:hover .book-cover-content { 
-      transform: scale(1.2) rotate(10deg); 
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
     }
 
-    /* Enhanced Page content */
-    .page-content {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 80%; height: 80%;
-      background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
-      border-radius: 4px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.9rem; 
-      color: #495057;
-      font-weight: 600;
-      overflow: hidden;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.1);
-    }
-    .page-content::before {
-      content: '';
-      position: absolute; 
-      inset: 0;
-      background: repeating-linear-gradient(
-        0deg,
-        rgba(0,0,0,0.03),
-        rgba(0,0,0,0.03) 1px,
-        transparent 1px,
-        transparent 2px
-      );
-    }
-
-    /* Enhanced Password toggle */
-    .password-toggle {
-      position: absolute;
-      right: 15px; 
-      top: 50%;
-      transform: translateY(-50%);
-      cursor: pointer;
-      color: #6c757d;
-      z-index: 10;
-      background: transparent;
-      border: 0;
-      padding: 5px;
-      font-size: 1.2rem;
-      transition: var(--transition);
-    }
-    .password-toggle:hover { 
-      color: var(--primary); 
-      transform: translateY(-50%) scale(1.1);
-    }
-
-    /* Enhanced Loading overlay */
-    .loading-overlay {
-      position: absolute; 
-      inset: 0;
-      background: rgba(255,255,255,0.95);
-      display: flex; 
-      align-items: center; 
-      justify-content: center;
-      border-radius: var(--radius);
-      z-index: 100;
-      backdrop-filter: blur(10px);
-    }
-    
-    .loading-overlay .spinner-border {
-      width: 3rem;
-      height: 3rem;
-      border-width: 0.3rem;
-    }
-
-    /* Enhanced Form validation */
-    .is-invalid { 
-      border-color: #dc3545 !important;
-      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
-      background-repeat: no-repeat;
-      background-position: right calc(0.375em + 0.1875rem) center;
-      background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
-    }
-    
-    .invalid-feedback {
-      display: block; 
-      width: 100%;
-      margin-top: 0.5rem; 
-      font-size: 0.875em; 
-      color: #dc3545;
-      text-align: left;
-      animation: slideDown 0.3s ease;
+    .loading-dots {
       display: flex;
-      align-items: center;
-      gap: 5px;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 1.5rem;
     }
-    
-    @keyframes slideDown {
-      from { 
+
+    .loading-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.7);
+      animation: bounce 1.4s ease-in-out infinite both;
+    }
+
+    .loading-dot:nth-child(1) { animation-delay: -0.32s; }
+    .loading-dot:nth-child(2) { animation-delay: -0.16s; }
+    .loading-dot:nth-child(3) { animation-delay: 0s; }
+
+    @keyframes bounce {
+      0%, 80%, 100% { 
+        transform: scale(0);
+      } 40% { 
+        transform: scale(1);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
         opacity: 0;
-        transform: translateY(-10px);
+        transform: translateY(30px);
       }
       to {
         opacity: 1;
         transform: translateY(0);
       }
     }
-    
-    .invalid-feedback::before {
-      content: '⚠';
-      font-size: 1.1em;
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
 
-    /* Success state */
-    .form-control.is-valid {
-      border-color: #28a745;
-      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2328a745' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
-      background-repeat: no-repeat;
-      background-position: right calc(0.375em + 0.1875rem) center;
-      background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+    /* Form Styles */
+    .form-container {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease-out;
     }
 
-    /* Divider */
-    .auth-divider {
-      margin: 25px 0;
-      text-align: center;
+    .form-container.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Book Animation */
+    .books-container {
+      display: flex;
+      gap: 15px;
+      perspective: 1000px;
+      margin-bottom: 2rem;
+    }
+    .book {
+      width: 60px;
+      height: 90px;
       position: relative;
+      transform-style: preserve-3d;
+      transition: var(--transition);
+      cursor: pointer;
     }
-    
-    .auth-divider::before {
-      content: '';
+    .book:hover { transform: translateY(-10px) scale(1.1); }
+    .book-cover {
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      border-radius: 4px;
       position: absolute;
-      top: 50%;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, #e0e0e0, transparent);
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+      z-index: 2;
+    }
+    .book-page {
+      background: white;
+      position: absolute;
+      inset: 2px 2px 2px 0;
+      transform-origin: left;
+      z-index: 1;
+      box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+    }
+    /* Simple flip animation on load */
+    .book:nth-child(1) { animation: float 3s ease-in-out infinite; }
+    .book:nth-child(2) { animation: float 3s ease-in-out infinite 0.5s; }
+    .book:nth-child(3) { animation: float 3s ease-in-out infinite 1s; }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* Inputs */
+    .input-wrapper {
+      position: relative;
+      margin-bottom: 1.5rem;
     }
     
-    .auth-divider span {
-      background: var(--card-bg);
-      padding: 0 15px;
+    .input-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      transition: var(--transition);
+      z-index: 10;
+    }
+
+    .form-control, .form-select {
+      padding: 14px 14px 14px 48px;
+      border-radius: 12px;
+      border: 2px solid transparent;
+      background: #f1f5f9;
+      font-weight: 500;
+      transition: var(--transition);
+      font-size: 0.95rem;
+    }
+
+    .form-control:focus, .form-select:focus {
+      background: white;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+      transform: translateY(-2px);
+    }
+    
+    .form-control:focus ~ .input-icon {
+      color: var(--primary);
+    }
+
+    /* Buttons */
+    .btn-modern {
+      padding: 14px;
+      border-radius: 12px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      border: none;
+      transition: var(--transition);
       position: relative;
-      color: var(--muted);
-      font-size: 0.9rem;
+      overflow: hidden;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
     }
 
-    /* Focus visible for keyboard users */
-    :focus-visible {
-      outline: 3px solid rgba(0,123,255,0.5);
-      outline-offset: 2px;
-      border-radius: 10px;
+    .btn-primary-modern {
+      background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+      color: white;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
     }
 
-    /* Reduce motion preference */
+    .btn-primary-modern:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4);
+      color: white;
+    }
+
+    .btn-primary-modern:active { transform: translateY(0); }
+
+    /* Loading Overlay */
+    .loader-container {
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0.8);
+      backdrop-filter: blur(5px);
+      z-index: 50;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: var(--radius);
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 992px) {
+      .login-layout {
+        grid-template-columns: 1fr;
+        max-width: 500px;
+      }
+      .brand-section {
+        padding: 2rem;
+        background: rgba(255,255,255,0.2);
+      }
+      .books-container { margin-bottom: 1rem; }
+      .loading-text { font-size: 1.25rem; }
+      .loading-subtitle { font-size: 0.9rem; }
+      .progress-container { width: 250px; }
+    }
+
+    @media (max-width: 768px) {
+      .page-container { padding: 1rem; }
+      .glass-card { padding: 1.5rem; }
+      .progress-container { width: 200px; }
+      .logo-circle { width: 100px; height: 100px; }
+      .logo-icon { font-size: 2.5rem; }
+    }
+
+    .auth-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    a {
+      text-decoration: none;
+      color: var(--primary);
+      font-weight: 600;
+      transition: var(--transition);
+    }
+    a:hover { color: var(--secondary); }
+
+    /* Skip animation for accessibility */
     @media (prefers-reduced-motion: reduce) {
-      .book, .cover, .page, .fade-in, .welcome-text { 
-        animation: none !important; 
+      .loading-screen,
+      .loading-text,
+      .loading-subtitle,
+      .progress-bar,
+      .loading-dot,
+      .bg-shape {
+        animation: none !important;
         transition: none !important;
       }
-    }
-
-    /* Responsive tweaks */
-    @media (max-width: 992px) {
-      .book { width: 100px; height: 140px; }
-      .welcome-text { font-size: 2rem; }
-      .auth-card { padding: 30px; }
-    }
-    @media (max-width: 576px) {
-      .book { width: 84px; height: 114px; }
-      .books { gap: 16px; }
-      .welcome-text { font-size: 1.6rem; }
-      .auth-card { 
-        padding: 25px;
-        max-width: 95%;
-      }
-      .auth-card h3 { font-size: 1.6rem; }
     }
   `}</style>
 );
 
+// ===================== LOADING SCREEN COMPONENT =====================
+const LoadingScreen = ({ onComplete }) => {
+  const [progress, setProgress] = useState(0);
+  const [showText, setShowText] = useState(false);
+
+  useEffect(() => {
+    const timer1 = setTimeout(() => setShowText(true), 500);
+    
+    const progressInterval = setInterval(() => {
+      setProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(progressInterval);
+          setTimeout(onComplete, 500);
+          return 100;
+        }
+        return prev + Math.random() * 15;
+      });
+    }, 200);
+
+    return () => {
+      clearTimeout(timer1);
+      clearInterval(progressInterval);
+    };
+  }, [onComplete]);
+
+  return (
+    <motion.div 
+      className="loading-screen"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0, scale: 0.9 }}
+      transition={{ duration: 0.5 }}
+    >
+      <div className="loading-bg-shapes">
+        <div className="bg-shape"></div>
+        <div className="bg-shape"></div>
+        <div className="bg-shape"></div>
+      </div>
+      
+      <div className="loading-content">
+        <motion.div 
+          className="logo-container"
+          initial={{ scale: 0, rotate: -180 }}
+          animate={{ scale: 1, rotate: 0 }}
+          transition={{ 
+            type: "spring", 
+            stiffness: 100, 
+            damping: 10,
+            delay: 0.2 
+          }}
+        >
+          <div className="logo-circle">
+            <motion.i 
+              className="bi bi-building logo-icon"
+              animate={{ 
+                scale: [1, 1.1, 1],
+                rotate: [0, 5, -5, 0]
+              }}
+              transition={{ 
+                duration: 2, 
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+            <div className="logo-ring"></div>
+          </div>
+        </motion.div>
+
+        <AnimatePresence>
+          {showText && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+            >
+              <h2 className="loading-text">Umudugudu Dashboard</h2>
+              <p className="loading-subtitle">Tegereza gato gukora ibikorwa byacu...</p>
+              
+              <div className="progress-container">
+                <motion.div 
+                  className="progress-bar"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${progress}%` }}
+                  transition={{ duration: 0.3 }}
+                />
+              </div>
+              
+              <div className="loading-dots">
+                <div className="loading-dot"></div>
+                <div className="loading-dot"></div>
+                <div className="loading-dot"></div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </motion.div>
+  );
+};
+
 // ===================== MAIN APP =====================
 function App() {
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    }
+  }, []);
+
   return (
     <>
       <GlobalStyles />
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/dashboard/:role" element={<RoleDashboard />} />
-      </Routes>
+      <div className="page-container">
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/dashboard/:role" element={<RoleDashboard />} />
+        </Routes>
+      </div>
     </>
   );
 }
 
-// ===================== ENHANCED LOGIN =====================
+// ===================== LOGIN COMPONENT =====================
 const Login = () => {
-  const [showForm, setShowForm] = useState(false);
   const [national_id, setNationalId] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const timer = setTimeout(() => setShowForm(true), 4000);
-    return () => clearTimeout(timer);
-  }, []);
+  const handleLoadingComplete = () => {
+    setShowForm(true);
+  };
 
   const validateForm = () => {
     const newErrors = {};
     if (!national_id) newErrors.national_id = "Indangamuntu ni ngombwa";
-    if (national_id && national_id.length !== 16) newErrors.national_id = "Indangamuntu igomba kuba ifite imibare 16";
+    if (national_id && national_id.length !== 16) newErrors.national_id = "Indangamuntu igomba kuba imibare 16";
     if (!password) newErrors.password = "Ijambo ry'ibanga ni ngombwa";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -627,6 +663,7 @@ const Login = () => {
     try {
       const res = await axios.post("http://localhost:5000/login", { national_id, password });
       localStorage.setItem("token", res.data.token);
+      axios.defaults.headers.common["Authorization"] = `Bearer ${res.data.token}`;
       navigate(`/dashboard/${res.data.role}`);
     } catch (err) {
       alert(err.response?.data?.error || "Ikosa mu kwinjira!");
@@ -636,137 +673,321 @@ const Login = () => {
   };
 
   return (
-    <div className="d-flex flex-column justify-content-center align-items-center page-shell text-center position-relative">
-      {!showForm ? (
-        <div>
-          <div className="books">
-            {[...Array(4)].map((_, i) => (
-              <div className="book" key={i} aria-hidden="true">
-                <div className="cover">
-                  <div className="book-cover-content">
-                    {i === 0 ? '🏠' : i === 1 ? '👥' : i === 2 ? '📊' : '📋'}
-                  </div>
+    <>
+      <AnimatePresence>
+        {!showForm && (
+          <LoadingScreen onComplete={handleLoadingComplete} />
+        )}
+      </AnimatePresence>
+
+      <motion.div 
+        className="glass-card login-layout shadow-lg"
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ 
+          opacity: showForm ? 1 : 0,
+          scale: showForm ? 1 : 0.9,
+          y: showForm ? 0 : 20
+        }}
+        transition={{ 
+          duration: 0.6,
+          delay: showForm ? 0.2 : 0,
+          type: "spring",
+          stiffness: 100
+        }}
+        style={{
+          display: showForm ? 'grid' : 'none'
+        }}
+      >
+        {/* Left Side - Artistic/Brand */}
+        <motion.div 
+          className="brand-section text-center"
+          initial={{ x: -50, opacity: 0 }}
+          animate={{ 
+            x: showForm ? 0 : -50, 
+            opacity: showForm ? 1 : 0 
+          }}
+          transition={{ 
+            duration: 0.6,
+            delay: showForm ? 0.4 : 0 
+          }}
+        >
+          <motion.div 
+            className="books-container"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ 
+              y: showForm ? 0 : 20, 
+              opacity: showForm ? 1 : 0 
+            }}
+            transition={{ 
+              duration: 0.5,
+              delay: showForm ? 0.6 : 0 
+            }}
+          >
+            {[...Array(3)].map((_, i) => (
+              <motion.div 
+                key={i}
+                className="book" 
+                initial={{ scale: 0, rotateY: -90 }}
+                animate={{ 
+                  scale: showForm ? 1 : 0,
+                  rotateY: showForm ? 0 : -90
+                }}
+                transition={{ 
+                  duration: 0.6,
+                  delay: showForm ? 0.7 + (i * 0.1) : 0,
+                  type: "spring",
+                  stiffness: 100
+                }}
+              >
+                <div className="book-cover">
+                  {i === 0 ? <i className="bi bi-house"></i> : i === 1 ? <i className="bi bi-people"></i> : <i className="bi bi-graph-up"></i>}
                 </div>
-                <div className="page">
-                  <div className="page-content">
-                    {i === 0 ? 'Umudugudu' : i === 1 ? 'Abaturage' : i === 2 ? 'Ibyerekeye' : 'Raporo'}
-                  </div>
-                </div>
-                <div className="page" style={{ animationDelay: `${i * 0.2 + 0.1}s` }}></div>
-              </div>
+                <div className="book-page"></div>
+              </motion.div>
             ))}
-          </div>
-          <div className="welcome-text">📚 Murakaza Neza kumudugudu...</div>
-          <button className="skip-btn" onClick={() => setShowForm(true)} aria-label="Komeza winjire utanategereje animasiyo">
-            Komeza winjire <i className="bi bi-arrow-right-circle"></i>
-          </button>
-        </div>
-      ) : (
-        <div className="auth-card fade-in position-relative" role="dialog" aria-modal="true">
+          </motion.div>
+          
+          <motion.h2 
+            className="fw-bold mb-2 text-dark"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ 
+              y: showForm ? 0 : 20, 
+              opacity: showForm ? 1 : 0 
+            }}
+            transition={{ 
+              duration: 0.5,
+              delay: showForm ? 0.8 : 0 
+            }}
+          >
+            Murakaza Neza
+          </motion.h2>
+          <motion.p 
+            className="text-muted small"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ 
+              y: showForm ? 0 : 20, 
+              opacity: showForm ? 1 : 0 
+            }}
+            transition={{ 
+              duration: 0.5,
+              delay: showForm ? 0.9 : 0 
+            }}
+          >
+            Urubuga rwo gucunga amakuru y'umudugudu mu buryo bw'ikoranabuhanga.
+          </motion.p>
+        </motion.div>
+
+        {/* Right Side - Form */}
+        <motion.div 
+          className="form-section position-relative"
+          initial={{ x: 50, opacity: 0 }}
+          animate={{ 
+            x: showForm ? 0 : 50, 
+            opacity: showForm ? 1 : 0 
+          }}
+          transition={{ 
+            duration: 0.6,
+            delay: showForm ? 0.3 : 0 
+          }}
+        >
           {isLoading && (
-            <div className="loading-overlay" aria-live="polite">
-              <div className="spinner-border text-primary" role="status">
-                <span className="visually-hidden">Loading...</span>
-              </div>
-            </div>
-          )}
-          <h3><i className="bi bi-shield-lock"></i> Injira</h3>
-          <form onSubmit={handleLogin} noValidate>
-            <div className="input-group">
-              <i className="bi bi-person-badge input-group-icon"></i>
-              <input
-                className={`form-control ${errors.national_id ? 'is-invalid' : ''}`}
-                placeholder="Indangamuntu (16)"
-                value={national_id}
-                inputMode="numeric"
-                maxLength={16}
-                pattern="^\d{16}$"
-                onChange={(e) => setNationalId(e.target.value.replace(/\D/g, '').slice(0,16))}
-                required
-                aria-invalid={!!errors.national_id}
-                aria-describedby={errors.national_id ? 'nid-error' : undefined}
+            <motion.div 
+              className="loader-container"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <motion.div 
+                className="spinner-border text-primary" 
+                role="status"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
               />
-              {errors.national_id && <div id="nid-error" className="invalid-feedback">{errors.national_id}</div>}
+            </motion.div>
+          )}
+          
+          <motion.div 
+            className="mb-4"
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ 
+              y: showForm ? 0 : -20, 
+              opacity: showForm ? 1 : 0 
+            }}
+            transition={{ 
+              duration: 0.5,
+              delay: showForm ? 0.5 : 0 
+            }}
+          >
+            <h3 className="auth-title">Injira muri Konti</h3>
+            <p className="text-muted small">Koresha indangamuntu yawe kugirango winjire.</p>
+          </motion.div>
+
+          <motion.form 
+            onSubmit={handleLogin} 
+            noValidate
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ 
+              y: showForm ? 0 : 20, 
+              opacity: showForm ? 1 : 0 
+            }}
+            transition={{ 
+              duration: 0.5,
+              delay: showForm ? 0.6 : 0 
+            }}
+          >
+            <div className="input-wrapper">
+              <motion.input
+                className={`form-control ${errors.national_id ? 'is-invalid' : ''}`}
+                placeholder="Indangamuntu (16 digits)"
+                value={national_id}
+                onChange={(e) => setNationalId(e.target.value.replace(/\D/g, '').slice(0,16))}
+                maxLength={16}
+                initial={{ scale: 0.95 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.3 }}
+                whileFocus={{ scale: 1.02 }}
+              />
+              <i className="bi bi-person-badge input-icon"></i>
+              {errors.national_id && (
+                <motion.div 
+                  className="invalid-feedback d-block mt-1 text-start"
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                >
+                  {errors.national_id}
+                </motion.div>
+              )}
             </div>
-            <div className="input-group">
-              <i className="bi bi-key input-group-icon"></i>
-              <input
+
+            <div className="input-wrapper">
+              <motion.input
                 type={showPassword ? "text" : "password"}
                 className={`form-control ${errors.password ? 'is-invalid' : ''}`}
                 placeholder="Ijambo ry'ibanga"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
-                aria-invalid={!!errors.password}
-                aria-describedby={errors.password ? 'pwd-error' : undefined}
+                initial={{ scale: 0.95 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.3, delay: 0.1 }}
+                whileFocus={{ scale: 1.02 }}
               />
-              <button
+              <i className="bi bi-key input-icon"></i>
+              <motion.button
                 type="button"
-                className="password-toggle"
+                className="btn btn-link position-absolute end-0 top-50 translate-middle-y text-muted text-decoration-none"
+                style={{ zIndex: 10, marginRight: '10px' }}
                 onClick={() => setShowPassword(!showPassword)}
-                aria-label={showPassword ? "Hisha ijambo ry'ibanga" : "Erekana ijambo ry'ibanga"}
-                aria-pressed={showPassword}
-                title={showPassword ? "Hisha" : "Erekana"}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
               >
-                <i className={`bi bi-${showPassword ? 'eye-slash' : 'eye'}`}></i>
-              </button>
-              {errors.password && <div id="pwd-error" className="invalid-feedback">{errors.password}</div>}
+                <motion.i 
+                  className={`bi bi-${showPassword ? 'eye-slash' : 'eye'}`}
+                  animate={{ rotate: showPassword ? 180 : 0 }}
+                  transition={{ duration: 0.3 }}
+                />
+              </motion.button>
+              {errors.password && (
+                <motion.div 
+                  className="invalid-feedback d-block mt-1 text-start"
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                >
+                  {errors.password}
+                </motion.div>
+              )}
             </div>
-            <button className="btn btn-primary" disabled={isLoading}>
+
+            <motion.button 
+              className="btn-modern btn-primary-modern mt-2" 
+              disabled={isLoading}
+              type="submit"
+              initial={{ scale: 0.95 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.3, delay: 0.2 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
               {isLoading ? (
                 <>
-                  <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                  Injira...
+                  <motion.div
+                    className="spinner-border spinner-border-sm me-2"
+                    role="status"
+                    aria-hidden="true"
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                  />
+                  Tegereza...
                 </>
               ) : (
                 <>
-                  <i className="bi bi-box-arrow-in-right"></i>
-                  Injira
+                  Injira Aho Ujya 
+                  <motion.i 
+                    className="bi bi-arrow-right"
+                    animate={{ x: [0, 5, 0] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                  />
                 </>
               )}
-            </button>
-          </form>
-          <div className="auth-divider">
-            <span>cyangwa</span>
-          </div>
-          <p className="mt-3 text-muted">
-            Nta konti ufite? <Link to="/register"><i className="bi bi-person-plus"></i> Iyandikishe hano</Link>
-          </p>
-        </div>
-      )}
-    </div>
+            </motion.button>
+          </motion.form>
+
+          <motion.div 
+            className="mt-4 text-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: showForm ? 1 : 0 }}
+            transition={{ duration: 0.5, delay: 0.8 }}
+          >
+            <p className="text-muted small mb-0">
+              Nta konti ufite? <Link to="/register">Iyandikishe Hano</Link>
+            </p>
+          </motion.div>
+        </motion.div>
+      </motion.div>
+    </>
   );
 };
 
-// ===================== ENHANCED REGISTER =====================
+// ===================== REGISTER COMPONENT =====================
 const Register = () => {
-  const [national_id, setNationalId] = useState("");
-  const [fullname, setFullname] = useState("");
-  const [email, setEmail] = useState("");
-  const [telefone, setTelefone] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [role, setRole] = useState("");
+  const [formData, setFormData] = useState({
+    national_id: "",
+    fullname: "",
+    email: "",
+    telefone: "",
+    password: "",
+    confirmPassword: "",
+    role: ""
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
+  const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowForm(true), 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    // Clear error when typing
+    if(errors[name]) setErrors(prev => ({...prev, [name]: null}));
+  };
 
   const validateForm = () => {
     const newErrors = {};
-    if (!national_id) newErrors.national_id = "Indangamuntu ni ngombwa";
-    if (national_id && national_id.length !== 16) newErrors.national_id = "Indangamuntu igomba kuba ifite imibare 16";
-    if (!fullname) newErrors.fullname = "Amazina ni ngombwa";
-    if (!email) newErrors.email = "Email ni ngombwa";
-    if (email && !/^\S+@\S+\.\S+$/.test(email)) newErrors.email = "Email idafite imiterere ikwiye";
-    if (!telefone) newErrors.telefone = "Telefone ni ngombwa";
-    if (telefone && !/^07\d{8}$/.test(telefone)) newErrors.telefone = "Telefone igomba gutangirana na 07 ikagira imibare 10";
-    if (!password) newErrors.password = "Ijambo ry'ibanga ni ngombwa";
-    if (password && password.length < 6) newErrors.password = "Ijambo ry'ibanga rigomba kuba rifite nibura inyuguti 6";
-    if (!confirmPassword) newErrors.confirmPassword = "Kwemeza ijambo ry'ibanga ni ngombwa";
-    if (password && confirmPassword && password !== confirmPassword) newErrors.confirmPassword = "Amagambo y'ibanga ntiyahuranye";
+    const { national_id, fullname, email, telefone, password, confirmPassword, role } = formData;
+    
+    if (!national_id || national_id.length !== 16) newErrors.national_id = "Imibare 16 irakenewe";
+    if (!fullname) newErrors.fullname = "Amazina arasabwa";
+    if (!email || !/^\S+@\S+\.\S+$/.test(email)) newErrors.email = "Email ntiyemewe";
+    if (!telefone || !/^07\d{8}$/.test(telefone)) newErrors.telefone = "Telefone igomba kuba 07xxxxxxxx";
+    if (!password || password.length < 6) newErrors.password = "Nibura inyuguti 6";
+    if (password !== confirmPassword) newErrors.confirmPassword = "Amagambo y'ibanga ntahura";
     if (!role) newErrors.role = "Hitamo inshingano";
+    
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -776,14 +997,7 @@ const Register = () => {
     if (!validateForm()) return;
     setIsLoading(true);
     try {
-      await axios.post("http://localhost:5000/register", { 
-        national_id, 
-        fullname, 
-        email, 
-        telefone, 
-        password, 
-        role 
-      });
+      await axios.post("http://localhost:5000/register", formData);
       alert("✅ Kwiyandikisha byagenze neza!");
       navigate("/");
     } catch (err) {
@@ -794,182 +1008,339 @@ const Register = () => {
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center page-shell">
-      <div className="auth-card fade-in position-relative">
-        {isLoading && (
-          <div className="loading-overlay" aria-live="polite">
-            <div className="spinner-border text-success" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
-          </div>
-        )}
-        <h3><i className="bi bi-person-plus-fill"></i> Iyandikishe</h3>
-        <form onSubmit={handleRegister} noValidate>
-          <div className="input-group">
-            <i className="bi bi-person-badge input-group-icon"></i>
+    <motion.div 
+      className="glass-card shadow-lg" 
+      style={{ maxWidth: '700px' }}
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ 
+        opacity: showForm ? 1 : 0,
+        scale: showForm ? 1 : 0.9
+      }}
+      transition={{ 
+        duration: 0.6,
+        type: "spring",
+        stiffness: 100
+      }}
+    >
+      {isLoading && (
+        <motion.div 
+          className="loader-container"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <motion.div 
+            className="spinner-border text-success" 
+            role="status"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          />
+        </motion.div>
+      )}
+      
+      <motion.div 
+        className="text-center mb-4"
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ 
+          y: showForm ? 0 : -20, 
+          opacity: showForm ? 1 : 0 
+        }}
+        transition={{ duration: 0.5 }}
+      >
+        <motion.div 
+          className="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary rounded-circle mb-3" 
+          style={{width: 60, height: 60}}
+          whileHover={{ scale: 1.1, rotate: 360 }}
+          transition={{ duration: 0.5 }}
+        >
+          <motion.i 
+            className="bi bi-person-plus-fill fs-3"
+            animate={{ scale: [1, 1.1, 1] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          />
+        </motion.div>
+        <h3 className="auth-title">Iyandikishe</h3>
+        <p className="text-muted small">Uzuzamo amakuru yawe nyayo kugirango ufungure konti.</p>
+      </motion.div>
+
+      <form onSubmit={handleRegister} noValidate>
+        <motion.div 
+          className="grid-2"
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ 
+            y: showForm ? 0 : 20, 
+            opacity: showForm ? 1 : 0 
+          }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <motion.div 
+            className="input-wrapper"
+            whileFocus={{ scale: 1.02 }}
+          >
             <input 
+              name="national_id"
               className={`form-control ${errors.national_id ? 'is-invalid' : ''}`} 
               placeholder="Indangamuntu (16)" 
-              value={national_id}
-              inputMode="numeric"
+              value={formData.national_id}
+              onChange={(e) => setFormData(prev => ({...prev, national_id: e.target.value.replace(/\D/g, '').slice(0,16)}))}
               maxLength={16}
-              pattern="^\d{16}$"
-              onChange={(e) => setNationalId(e.target.value.replace(/\D/g, '').slice(0,16))}
-              required 
-              aria-invalid={!!errors.national_id}
-              aria-describedby={errors.national_id ? 'reg-nid-error' : undefined}
             />
-            {errors.national_id && <div id="reg-nid-error" className="invalid-feedback">{errors.national_id}</div>}
-          </div>
+            <i className="bi bi-card-heading input-icon"></i>
+            {errors.national_id && (
+              <motion.div 
+                className="invalid-feedback small"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+              >
+                {errors.national_id}
+              </motion.div>
+            )}
+          </motion.div>
 
-          <div className="input-group">
-            <i className="bi bi-person input-group-icon"></i>
+          <motion.div 
+            className="input-wrapper"
+            whileFocus={{ scale: 1.02 }}
+          >
             <input 
+              name="fullname"
               className={`form-control ${errors.fullname ? 'is-invalid' : ''}`} 
               placeholder="Amazina yose" 
-              value={fullname}
-              onChange={(e) => setFullname(e.target.value)} 
-              required 
-              aria-invalid={!!errors.fullname}
-              aria-describedby={errors.fullname ? 'fullname-error' : undefined}
+              value={formData.fullname}
+              onChange={handleChange} 
             />
-            {errors.fullname && <div id="fullname-error" className="invalid-feedback">{errors.fullname}</div>}
-          </div>
+            <i className="bi bi-person input-icon"></i>
+            {errors.fullname && (
+              <motion.div 
+                className="invalid-feedback small"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+              >
+                {errors.fullname}
+              </motion.div>
+            )}
+          </motion.div>
+        </motion.div>
 
-          <div className="input-group">
-            <i className="bi bi-envelope input-group-icon"></i>
+        <motion.div 
+          className="grid-2"
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ 
+            y: showForm ? 0 : 20, 
+            opacity: showForm ? 1 : 0 
+          }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
+          <motion.div 
+            className="input-wrapper"
+            whileFocus={{ scale: 1.02 }}
+          >
             <input 
-              className={`form-control ${errors.email ? 'is-invalid' : ''}`} 
+              name="email"
               type="email"
-              placeholder="Email" 
-              value={email}
-              onChange={(e) => setEmail(e.target.value)} 
-              required 
-              aria-invalid={!!errors.email}
-              aria-describedby={errors.email ? 'email-error' : undefined}
+              className={`form-control ${errors.email ? 'is-invalid' : ''}`} 
+              placeholder="Email Aderesi" 
+              value={formData.email}
+              onChange={handleChange} 
             />
-            {errors.email && <div id="email-error" className="invalid-feedback">{errors.email}</div>}
-          </div>
+            <i className="bi bi-envelope input-icon"></i>
+            {errors.email && (
+              <motion.div 
+                className="invalid-feedback small"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+              >
+                {errors.email}
+              </motion.div>
+            )}
+          </motion.div>
 
-          <div className="input-group">
-            <i className="bi bi-telephone input-group-icon"></i>
+          <motion.div 
+            className="input-wrapper"
+            whileFocus={{ scale: 1.02 }}
+          >
             <input 
+              name="telefone"
               className={`form-control ${errors.telefone ? 'is-invalid' : ''}`} 
-              placeholder="Telefone (07xxxxxxxx)" 
-              value={telefone}
-              inputMode="numeric"
+              placeholder="Telefone (07...)" 
+              value={formData.telefone}
+              onChange={(e) => setFormData(prev => ({...prev, telefone: e.target.value.replace(/\D/g, '').slice(0,10)}))}
               maxLength={10}
-              pattern="^07\\d{8}$"
-              onChange={(e) => setTelefone(e.target.value.replace(/\D/g, '').slice(0,10))}
-              required 
-              aria-invalid={!!errors.telefone}
-              aria-describedby={errors.telefone ? 'tel-error' : undefined}
             />
-            {errors.telefone && <div id="tel-error" className="invalid-feedback">{errors.telefone}</div>}
-          </div>
+            <i className="bi bi-telephone input-icon"></i>
+            {errors.telefone && (
+              <motion.div 
+                className="invalid-feedback small"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+              >
+                {errors.telefone}
+              </motion.div>
+            )}
+          </motion.div>
+        </motion.div>
 
-          <div className="input-group">
-            <i className="bi bi-key input-group-icon"></i>
+        <motion.div 
+          className="grid-2"
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ 
+            y: showForm ? 0 : 20, 
+            opacity: showForm ? 1 : 0 
+          }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
+          <motion.div 
+            className="input-wrapper"
+            whileFocus={{ scale: 1.02 }}
+          >
             <input 
+              name="password"
               type={showPassword ? "text" : "password"}
               className={`form-control ${errors.password ? 'is-invalid' : ''}`} 
               placeholder="Ijambo ry'ibanga" 
-              value={password}
-              onChange={(e) => setPassword(e.target.value)} 
-              required 
-              aria-invalid={!!errors.password}
-              aria-describedby={errors.password ? 'reg-pwd-error' : undefined}
+              value={formData.password}
+              onChange={handleChange} 
             />
-            <button
-              type="button"
-              className="password-toggle"
-              onClick={() => setShowPassword(!showPassword)}
-              aria-label={showPassword ? "Hisha ijambo ry'ibanga" : "Erekana ijambo ry'ibanga"}
-              aria-pressed={showPassword}
-              title={showPassword ? "Hisha" : "Erekana"}
-            >
-              <i className={`bi bi-${showPassword ? 'eye-slash' : 'eye'}`}></i>
-            </button>
-            {errors.password && <div id="reg-pwd-error" className="invalid-feedback">{errors.password}</div>}
-          </div>
-
-          <div className="input-group">
-            <i className="bi bi-shield-check input-group-icon"></i>
-            <input 
-              type={showConfirmPassword ? "text" : "password"}
-              className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`} 
-              placeholder="Kwemeza ijambo ry'ibanga" 
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)} 
-              required 
-              aria-invalid={!!errors.confirmPassword}
-              aria-describedby={errors.confirmPassword ? 'confirm-error' : undefined}
-            />
-            <button
-              type="button"
-              className="password-toggle"
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              aria-label={showConfirmPassword ? "Hisha ijambo ry'ibanga" : "Erekana ijambo ry'ibanga"}
-              aria-pressed={showConfirmPassword}
-              title={showConfirmPassword ? "Hisha" : "Erekana"}
-            >
-              <i className={`bi bi-${showConfirmPassword ? 'eye-slash' : 'eye'}`}></i>
-            </button>
-            {errors.confirmPassword && <div id="confirm-error" className="invalid-feedback">{errors.confirmPassword}</div>}
-          </div>
-
-          <div className="input-group">
-            <i className="bi bi-briefcase input-group-icon"></i>
-            <select 
-              className={`form-select ${errors.role ? 'is-invalid' : ''}`} 
-              value={role}
-              onChange={(e) => setRole(e.target.value)} 
-              required
-              aria-invalid={!!errors.role}
-              aria-describedby={errors.role ? 'role-error' : undefined}
-            >
-              <option value="">Hitamo inshingano</option>
-              <option value="Mudugudu">Umukuru w'Umudugudu</option>
-              <option value="Isibo">Umuyobozi w'Isibo</option>
-              <option value="Umunyamabanga">Umunyamabanga</option>
-              <option value="Bohejuru">Umuyobozi wo hejuru</option>
-            </select>
-            {errors.role && <div id="role-error" className="invalid-feedback">{errors.role}</div>}
-          </div>
-
-          <button className="btn btn-success" disabled={isLoading}>
-            {isLoading ? (
-              <>
-                <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                Iyandikisha...
-              </>
-            ) : (
-              <>
-                <i className="bi bi-check-circle"></i>
-                Iyandikishe
-              </>
+            <i className="bi bi-key input-icon"></i>
+            {errors.password && (
+              <motion.div 
+                className="invalid-feedback small"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+              >
+                {errors.password}
+              </motion.div>
             )}
-          </button>
-        </form>
-        <div className="auth-divider">
-          <span>cyangwa</span>
-        </div>
-        <p className="mt-3 text-muted">
-          Ufite konti? <Link to="/"><i className="bi bi-box-arrow-in-right"></i> Injira hano</Link>
+          </motion.div>
+
+          <motion.div 
+            className="input-wrapper"
+            whileFocus={{ scale: 1.02 }}
+          >
+            <input 
+              name="confirmPassword"
+              type={showPassword ? "text" : "password"}
+              className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`} 
+              placeholder="Emeza ijambo ry'ibanga" 
+              value={formData.confirmPassword}
+              onChange={handleChange} 
+            />
+            <i className="bi bi-shield-lock input-icon"></i>
+            {errors.confirmPassword && (
+              <motion.div 
+                className="invalid-feedback small"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+              >
+                {errors.confirmPassword}
+              </motion.div>
+            )}
+          </motion.div>
+        </motion.div>
+        
+        <motion.div 
+          className="form-check mb-3"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: showForm ? 1 : 0 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+        >
+          <input 
+            className="form-check-input" 
+            type="checkbox" 
+            id="showPass" 
+            checked={showPassword} 
+            onChange={() => setShowPassword(!showPassword)} 
+          />
+          <label className="form-check-label small text-muted" htmlFor="showPass">
+            Erekana amagambo y'ibanga
+          </label>
+        </motion.div>
+
+        <motion.div 
+          className="input-wrapper mb-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: showForm ? 1 : 0 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+        >
+          <select 
+            name="role"
+            className={`form-select ${errors.role ? 'is-invalid' : ''}`} 
+            value={formData.role}
+            onChange={handleChange}
+            style={{ paddingLeft: '48px' }}
+          >
+            <option value="">Hitamo inshingano...</option>
+            <option value="Mudugudu">Umukuru w'Umudugudu</option>
+            <option value="Isibo">Umuyobozi w'Isibo</option>
+            <option value="Umunyamabanga">Umunyamabanga</option>
+            <option value="Bohejuru">Umuyobozi wo hejuru</option>
+          </select>
+          <i className="bi bi-briefcase input-icon"></i>
+          {errors.role && (
+            <motion.div 
+              className="invalid-feedback small"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+            >
+              {errors.role}
+            </motion.div>
+          )}
+        </motion.div>
+
+        <motion.button 
+          className="btn-modern" 
+          disabled={isLoading} 
+          onClick={handleRegister}
+          style={{ background: 'linear-gradient(135deg, #10b981, #059669)' }}
+          initial={{ scale: 0.95 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 0.3, delay: 0.7 }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+        >
+          <motion.i 
+            className="bi bi-check-lg"
+            animate={{ rotate: isLoading ? [0, 360] : 0 }}
+            transition={{ duration: 1, repeat: isLoading ? Infinity : 0 }}
+          />
+          Emeza Kwiyandikisha
+        </motion.button>
+      </form>
+
+      <motion.div 
+        className="text-center mt-4 pt-3 border-top"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: showForm ? 1 : 0 }}
+        transition={{ duration: 0.5, delay: 0.8 }}
+      >
+        <p className="text-muted small mb-0">
+          Ufite konti asanzwe? <Link to="/">Injira Hano</Link>
         </p>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 
-// ===================== ROLE DASHBOARD =====================
+// ===================== ROUTE HANDLER =====================
 const RoleDashboard = () => {
   const { role } = useParams();
+  
+  const DashboardWrapper = ({ children }) => (
+    <motion.div 
+      className="w-100" 
+      style={{minHeight: '80vh', width: '100vw', maxWidth: '100%'}}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.6 }}
+    >
+      {children}
+    </motion.div>
+  );
+
   switch (role) {
-    case "Bohejuru": return <DashboardBohejuru />;
-    case "Umunyamabanga": return <DashboardUmunyamabanga />;
-    case "Isibo": return <DashboardIsibo />;
-    default: return <Dashboard />;
+    case "Bohejuru": return <DashboardWrapper><DashboardBohejuru /></DashboardWrapper>;
+    case "Umunyamabanga": return <DashboardWrapper><DashboardUmunyamabanga /></DashboardWrapper>;
+    case "Isibo": return <DashboardWrapper><DashboardIsibo /></DashboardWrapper>;
+    default: return <DashboardWrapper><Dashboard /></DashboardWrapper>;
   }
 };
 

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
-// Import components
+// Placeholder imports (Replace with your actual file paths)
 import Abayobozi from "./Abayobozi";
 import IbikorwaRaporo from "./IbikorwaRaporo";
 import ImiberehoMyiza from "./ImiberehoMyiza";
@@ -874,7 +874,8 @@ const PaymentReport = () => {
   const paymentCode = "1759342";
   const bankAccount = "XXX-XXXX-XXXX (Shyiramo konti nyayo ya banki yawe)";
   const phone = "0792652471";
-  const serviceFee = 500;
+  // ⚠️ CHANGE APPLIED HERE: Value updated from 500 to 2000
+  const serviceFee = 2000; 
   const period = "Buri kwezi";
   const [copied, setCopied] = useState(false);
 
