@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 16, 2025 at 04:16 PM
+-- Generation Time: Dec 12, 2025 at 10:02 AM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -306,6 +306,21 @@ INSERT INTO `ingo` (`urugo_id`, `umukuru_w_urugo`, `umubare_w_abagize`, `aho_bat
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `inkunga_leta`
+--
+
+CREATE TABLE `inkunga_leta` (
+  `id` int(11) NOT NULL,
+  `umuturage` varchar(255) NOT NULL,
+  `ubwoko` varchar(255) NOT NULL,
+  `amount` int(11) NOT NULL,
+  `itariki` date NOT NULL,
+  `user_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `isibo`
 --
 
@@ -324,6 +339,18 @@ CREATE TABLE `isibo` (
 INSERT INTO `isibo` (`isibo_id`, `izina_ry_isibo`, `umuyobozi_w_isibo`, `umubare_w_abaturage`, `umudugudu`) VALUES
 (4, 'twiheshe agaciro', 'shyira iriburyio venisit', 444, 'karambi'),
 (5, 'twiheshe agaciro', 'shyira iriburyio venisit', 56, 'mataba');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `message`
+--
+
+CREATE TABLE `message` (
+  `id` int(11) NOT NULL,
+  `text_user` text NOT NULL,
+  `user_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -413,6 +440,34 @@ CREATE TABLE `ubuzima` (
 
 INSERT INTO `ubuzima` (`ubuzima_id`, `afite_ubumuga`, `ubwoko_bw_ubumuga`, `indwara_y_igihe_kirekire`, `afite_mutuelle`, `ubwoko_bwa_mutuelle`, `ivuriro_ajyamo`, `amazina_y_umuturage`) VALUES
 (20, 1, 'budakira', 'asima', 1, 'mituweli', 'nyarurenzi', 'mmmm');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `umusanzu_ejoheza`
+--
+
+CREATE TABLE `umusanzu_ejoheza` (
+  `id` int(11) NOT NULL,
+  `umuturage` varchar(255) NOT NULL,
+  `amafaranga` int(11) NOT NULL,
+  `itariki` date NOT NULL,
+  `user_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `umusanzu_fpr`
+--
+
+CREATE TABLE `umusanzu_fpr` (
+  `id` int(11) NOT NULL,
+  `umuturage` varchar(255) NOT NULL,
+  `amafaranga` int(11) NOT NULL,
+  `itariki` date NOT NULL,
+  `user_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -598,10 +653,24 @@ ALTER TABLE `ingo`
   ADD PRIMARY KEY (`urugo_id`);
 
 --
+-- Indexes for table `inkunga_leta`
+--
+ALTER TABLE `inkunga_leta`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- Indexes for table `isibo`
 --
 ALTER TABLE `isibo`
   ADD PRIMARY KEY (`isibo_id`);
+
+--
+-- Indexes for table `message`
+--
+ALTER TABLE `message`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `raporo`
@@ -627,6 +696,20 @@ ALTER TABLE `uburezi`
 --
 ALTER TABLE `ubuzima`
   ADD PRIMARY KEY (`ubuzima_id`);
+
+--
+-- Indexes for table `umusanzu_ejoheza`
+--
+ALTER TABLE `umusanzu_ejoheza`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `umusanzu_fpr`
+--
+ALTER TABLE `umusanzu_fpr`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `urubyiruko`
@@ -663,13 +746,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `abagore_batwite`
 --
 ALTER TABLE `abagore_batwite`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `abakobwa_babyaye`
 --
 ALTER TABLE `abakobwa_babyaye`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `abakoresha`
@@ -681,37 +764,37 @@ ALTER TABLE `abakoresha`
 -- AUTO_INCREMENT for table `abana`
 --
 ALTER TABLE `abana`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `abana_barimwo_mirire_mibi`
 --
 ALTER TABLE `abana_barimwo_mirire_mibi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `abasheshe_akanguhe`
 --
 ALTER TABLE `abasheshe_akanguhe`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `abaturage`
 --
 ALTER TABLE `abaturage`
-  MODIFY `umuturage_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `umuturage_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `abayobozi`
 --
 ALTER TABLE `abayobozi`
-  MODIFY `umuyobozi_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `umuyobozi_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `documents`
 --
 ALTER TABLE `documents`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `ibikorwa`
@@ -723,19 +806,31 @@ ALTER TABLE `ibikorwa`
 -- AUTO_INCREMENT for table `imibereho_myiza`
 --
 ALTER TABLE `imibereho_myiza`
-  MODIFY `imibereho_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `imibereho_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `ingo`
 --
 ALTER TABLE `ingo`
-  MODIFY `urugo_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `urugo_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT for table `inkunga_leta`
+--
+ALTER TABLE `inkunga_leta`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `isibo`
 --
 ALTER TABLE `isibo`
-  MODIFY `isibo_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `isibo_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `message`
+--
+ALTER TABLE `message`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `raporo`
@@ -747,43 +842,83 @@ ALTER TABLE `raporo`
 -- AUTO_INCREMENT for table `ubukungu`
 --
 ALTER TABLE `ubukungu`
-  MODIFY `ubukungu_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ubukungu_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `uburezi`
 --
 ALTER TABLE `uburezi`
-  MODIFY `uburezi_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `uburezi_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `ubuzima`
 --
 ALTER TABLE `ubuzima`
-  MODIFY `ubuzima_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ubuzima_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT for table `umusanzu_ejoheza`
+--
+ALTER TABLE `umusanzu_ejoheza`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `umusanzu_fpr`
+--
+ALTER TABLE `umusanzu_fpr`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `urubyiruko`
 --
 ALTER TABLE `urubyiruko`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `urubyiruko_rudafite_akazi`
 --
 ALTER TABLE `urubyiruko_rudafite_akazi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `urubyiruko_rukora`
 --
 ALTER TABLE `urubyiruko_rukora`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `inkunga_leta`
+--
+ALTER TABLE `inkunga_leta`
+  ADD CONSTRAINT `inkunga_leta_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `message`
+--
+ALTER TABLE `message`
+  ADD CONSTRAINT `message_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `umusanzu_ejoheza`
+--
+ALTER TABLE `umusanzu_ejoheza`
+  ADD CONSTRAINT `umusanzu_ejoheza_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `umusanzu_fpr`
+--
+ALTER TABLE `umusanzu_fpr`
+  ADD CONSTRAINT `umusanzu_fpr_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
