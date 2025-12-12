@@ -122,6 +122,15 @@ app.post("/message/:id",(req,res)=>{
   })
 })
 
+app.get("/message_as_bohejuru",(req,res)=>{
+  const data = user.rep.params;
+  const sql = "SELECT * FROM message";
+  db.query(sql,data,(err,result)=>{
+    if (err) return res.json(err);
+    res.json(result)
+  })
+})
+
 app.get("/message/:id",(req,res)=>{
   const data = user.rep.params;
   const sql = "SELECT * FROM message WHERE user_id =?";
