@@ -108,6 +108,185 @@ app.get("/profile", (req, res) => {
   res.json({ message: "Protected data", user_id: req.user.id, role: req.user.role });
 });
 
+// MESSAGE ENDPOINTS
+
+app.post("/message/:id",(req,res)=>{
+  const data = [
+    message.req.body,
+    user.req.params
+  ]
+  const sql = "INSERT INTO message(test_user,user_id) VALUES (?)";
+  db.query(sql,data,(err,result)=>{
+    if (err) return res.status(500).json({error:err});
+    return res.json({message:"Message yoherejwe neza"})
+  })
+})
+
+app.get("/message/:id",(req,res)=>{
+  const data = user.rep.params;
+  const sql = "SELECT * FROM message WHERE user_id =?";
+  db.query(sql,data,(err,result)=>{
+    if (err) return res.json(err);
+    res.json(result)
+  })
+})
+
+// UMUSANZU FPR ENDPOINT
+
+app.post("/umusanzu_fpr/:id",(req,res)=>{
+  const data = [
+    umuturage.req.body,
+    amafaranga.req.body,
+    itariki.req.body,
+    user.req.params
+  ]
+  const sql = "INSERT INTO umusanzu_fpr(umuturage,amafaranga,itariki,user_id) VALUES (?)";
+  db.query(sql,data,(err,result)=>{
+    if (err) return res.status(500).json({error:err});
+    return res.json({message:"Umusanzu wanditswe neza"})
+  })
+})
+
+app.get("/umusanzu_fpr/:id",(req,res)=>{
+  const data = user.rep.params;
+  const sql = "SELECT * FROM umusanzu_fpr WHERE user_id =?";
+  db.query(sql,data,(err,result)=>{
+    if (err) return res.json(err);
+    res.json(result)
+  })
+})
+
+app.put("/umusanzu_fpr/:id", (req, res) => {
+  const { id } = req.params;
+  const d = req.body;
+  // Update only if it belongs to user_id
+  const sql = `
+    UPDATE umusanzu_fpr SET 
+    umuturage=?,amafaranga=?,itariki
+    WHERE id=? AND user_id=?
+  `;
+  db.query(sql, [d.umuturage,d.amafaranga,d.itariki, id, req.user.id],
+    (err, result) => {
+      if (err) return res.status(500).json({ error: err });
+      if (result.affectedRows === 0) return res.status(403).json({ error: "Ntibyemewe guhindura uyu musanzu" });
+      res.json({ message: "✏️ Amakuru y'umusanzu yavuguruwe neza!" });
+    });
+});
+
+app.delete("/umusanzu_fpr/:id", (req, res) => {
+  const { id } = req.params;
+  // Delete only if it belongs to user_id
+  db.query("DELETE FROM umusanzu_fpr WHERE id = ? AND user_id = ?", [id, req.user.id], (err, result) => {
+    if (err) return res.status(500).json({ error: err });
+    if (result.affectedRows === 0) return res.status(403).json({ error: "Ntibyemewe gusiba uyu musanzu" });
+    res.json({ message: "🗑️ Umusanzu wasibwe neza!" });
+  });
+});
+
+// UMUSANZU ejoheza ENDPOINT
+
+app.post("/umusanzu_ejoheza/:id",(req,res)=>{
+  const data = [
+    umuturage.req.body,
+    amafaranga.req.body,
+    itariki.req.body,
+    user.req.params
+  ]
+  const sql = "INSERT INTO umusanzu_ejoheza(umuturage,amafaranga,itariki,user_id) VALUES (?)";
+  db.query(sql,data,(err,result)=>{
+    if (err) return res.status(500).json({error:err});
+    return res.json({message:"Umusanzu wanditswe neza"})
+  })
+})
+
+app.get("/umusanzu_ejoheza/:id",(req,res)=>{
+  const data = user.rep.params;
+  const sql = "SELECT * FROM umusanzu_ejoheza WHERE user_id =?";
+  db.query(sql,data,(err,result)=>{
+    if (err) return res.json(err);
+    res.json(result)
+  })
+})
+
+app.put("/umusanzu_fpr/:id", (req, res) => {
+  const { id } = req.params;
+  const d = req.body;
+  // Update only if it belongs to user_id
+  const sql = `
+    UPDATE umusanzu_ejoheza SET 
+    umuturage=?,amafaranga=?,itariki
+    WHERE id=? AND user_id=?
+  `;
+  db.query(sql, [d.umuturage,d.amafaranga,d.itariki, id, req.user.id],
+    (err, result) => {
+      if (err) return res.status(500).json({ error: err });
+      if (result.affectedRows === 0) return res.status(403).json({ error: "Ntibyemewe guhindura uyu musanzu" });
+      res.json({ message: "✏️ Amakuru y'umusanzu yavuguruwe neza!" });
+    });
+});
+
+app.delete("/umusanzu_ejoheza/:id", (req, res) => {
+  const { id } = req.params;
+  // Delete only if it belongs to user_id
+  db.query("DELETE FROM umusanzu_ejoheza WHERE id = ? AND user_id = ?", [id, req.user.id], (err, result) => {
+    if (err) return res.status(500).json({ error: err });
+    if (result.affectedRows === 0) return res.status(403).json({ error: "Ntibyemewe gusiba uyu musanzu" });
+    res.json({ message: "🗑️ Umusanzu wasibwe neza!" });
+  });
+});
+
+// inkunga leta ENDPOINT
+
+app.post("/inkunga_leta/:id",(req,res)=>{
+  const data = [
+    umuturage.req.body,
+    ubwoko.req.body,
+    amount.req.body,
+    itariki.req.body,
+    user.req.params
+  ]
+  const sql = "INSERT INTO inkunga_leta(umuturage,ubwoko,amount,itariki,user_id) VALUES (?)";
+  db.query(sql,data,(err,result)=>{
+    if (err) return res.status(500).json({error:err});
+    return res.json({message:"inkungu yanditswe neza"})
+  })
+})
+
+app.get("/inkunga_leta/:id",(req,res)=>{
+  const data = user.rep.params;
+  const sql = "SELECT * FROM inkunga_leta WHERE user_id =?";
+  db.query(sql,data,(err,result)=>{
+    if (err) return res.json(err);
+    res.json(result)
+  })
+})
+
+app.put("/inkunga_leta/:id", (req, res) => {
+  const { id } = req.params;
+  const d = req.body;
+  // Update only if it belongs to user_id
+  const sql = `
+    UPDATE inkunga_leta SET 
+    umuturage=?,ubwoko=?,amount=?,itariki
+    WHERE id=? AND user_id=?
+  `;
+  db.query(sql, [d.umuturage,d.ubwoko,d.amount,d.itariki, id, req.user.id],
+    (err, result) => {
+      if (err) return res.status(500).json({ error: err });
+      if (result.affectedRows === 0) return res.status(403).json({ error: "Ntibyemewe guhindura iyi nkunga" });
+      res.json({ message: "✏️ Amakuru y'inkunga yavuguruwe neza!" });
+    });
+});
+
+app.delete("/inkunga_leta/:id", (req, res) => {
+  const { id } = req.params;
+  // Delete only if it belongs to user_id
+  db.query("DELETE FROM inkunga_leta WHERE id = ? AND user_id = ?", [id, req.user.id], (err, result) => {
+    if (err) return res.status(500).json({ error: err });
+    if (result.affectedRows === 0) return res.status(403).json({ error: "Ntibyemewe gusiba iyi nkunga" });
+    res.json({ message: "🗑️ Inkunga yasibwe neza!" });
+  });
+});
 
 // ============================================================
 // 🧍‍♂️ ABATURAGE ENDPOINTS (SECURED)
