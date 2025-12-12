@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 12, 2025 at 10:02 AM
+-- Generation Time: Dec 12, 2025 at 11:41 AM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -35,15 +35,9 @@ CREATE TABLE `abagore_batwite` (
   `aderesi` varchar(100) DEFAULT NULL,
   `amezi_atwite` int(11) DEFAULT NULL,
   `asuzumwe_kuvuzi` enum('Yego','Oya') DEFAULT 'Oya',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `abagore_batwite`
---
-
-INSERT INTO `abagore_batwite` (`id`, `amazina`, `imyaka`, `nimero_ya_telephone`, `aderesi`, `amezi_atwite`, `asuzumwe_kuvuzi`, `created_at`) VALUES
-(1, 'jane', 30, '0789575446', 'nyarugenge', 5, 'Yego', '2025-11-16 14:14:29');
 
 -- --------------------------------------------------------
 
@@ -59,15 +53,9 @@ CREATE TABLE `abakobwa_babyaye` (
   `nimero_ya_telephone` varchar(15) DEFAULT NULL,
   `umwana_ufite_imyaka` int(11) DEFAULT NULL,
   `asubiye_mw_ishuri` enum('Yego','Oya') DEFAULT 'Oya',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `abakobwa_babyaye`
---
-
-INSERT INTO `abakobwa_babyaye` (`id`, `amazina`, `imyaka`, `aderesi`, `nimero_ya_telephone`, `umwana_ufite_imyaka`, `asubiye_mw_ishuri`, `created_at`) VALUES
-(2, 'kevine', 18, 'karambi', '0788576289', 1, 'Oya', '2025-11-16 14:23:44');
 
 -- --------------------------------------------------------
 
@@ -82,7 +70,8 @@ CREATE TABLE `abakoresha` (
   `amazina_yose` varchar(100) DEFAULT NULL,
   `uruhare` enum('Admin','Umuyobozi','Isibo','Reba_Gusa') DEFAULT NULL,
   `telefone` varchar(20) DEFAULT NULL,
-  `igihe_yanditswe` timestamp NOT NULL DEFAULT current_timestamp()
+  `igihe_yanditswe` timestamp NOT NULL DEFAULT current_timestamp(),
+  `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -99,15 +88,16 @@ CREATE TABLE `abana` (
   `umubyeyi_wa_mwana` varchar(100) DEFAULT NULL,
   `aderesi` varchar(100) DEFAULT NULL,
   `aiga` enum('Yego','Oya') DEFAULT 'Yego',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `abana`
 --
 
-INSERT INTO `abana` (`id`, `amazina`, `imyaka`, `igitsina`, `umubyeyi_wa_mwana`, `aderesi`, `aiga`, `created_at`) VALUES
-(1, 'kariza eme ', 2, 'Gore', 'jack', 'karambi', 'Oya', '2025-11-16 12:31:43');
+INSERT INTO `abana` (`id`, `amazina`, `imyaka`, `igitsina`, `umubyeyi_wa_mwana`, `aderesi`, `aiga`, `created_at`, `user_id`) VALUES
+(1, 'kariza eme ', 2, 'Gore', 'jack', 'karambi', 'Oya', '2025-11-16 12:31:43', NULL);
 
 -- --------------------------------------------------------
 
@@ -124,15 +114,16 @@ CREATE TABLE `abana_barimwo_mirire_mibi` (
   `aderesi` varchar(100) DEFAULT NULL,
   `urwego_rw_imirire` enum('Bikabije','Bito','Bisanzwe') DEFAULT NULL,
   `afashijwe` enum('Yego','Oya') DEFAULT 'Oya',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `abana_barimwo_mirire_mibi`
 --
 
-INSERT INTO `abana_barimwo_mirire_mibi` (`id`, `amazina`, `imyaka`, `igitsina`, `umubyeyi_wa_mwana`, `aderesi`, `urwego_rw_imirire`, `afashijwe`, `created_at`) VALUES
-(1, 'kevin', 2, 'Gore', 'kamanzi eme', 'nyarugenge, mageragere,mataba', 'Bikabije', 'Oya', '2025-11-16 13:35:39');
+INSERT INTO `abana_barimwo_mirire_mibi` (`id`, `amazina`, `imyaka`, `igitsina`, `umubyeyi_wa_mwana`, `aderesi`, `urwego_rw_imirire`, `afashijwe`, `created_at`, `user_id`) VALUES
+(1, 'kevin', 2, 'Gore', 'kamanzi eme', 'nyarugenge, mageragere,mataba', 'Bikabije', 'Oya', '2025-11-16 13:35:39', NULL);
 
 -- --------------------------------------------------------
 
@@ -148,15 +139,16 @@ CREATE TABLE `abasheshe_akanguhe` (
   `nimero_ya_telephone` varchar(15) DEFAULT NULL,
   `aderesi` varchar(100) DEFAULT NULL,
   `ukeneye_ubufasha` enum('Yego','Oya') DEFAULT 'Oya',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `abasheshe_akanguhe`
 --
 
-INSERT INTO `abasheshe_akanguhe` (`id`, `amazina`, `imyaka`, `igitsina`, `nimero_ya_telephone`, `aderesi`, `ukeneye_ubufasha`, `created_at`) VALUES
-(1, 'asiyeri', 67, 'Gabo', '0798835555', 'karambi', 'Yego', '2025-11-16 12:34:25');
+INSERT INTO `abasheshe_akanguhe` (`id`, `amazina`, `imyaka`, `igitsina`, `nimero_ya_telephone`, `aderesi`, `ukeneye_ubufasha`, `created_at`, `user_id`) VALUES
+(1, 'asiyeri', 67, 'Gabo', '0798835555', 'karambi', 'Yego', '2025-11-16 12:34:25', NULL);
 
 -- --------------------------------------------------------
 
@@ -176,16 +168,19 @@ CREATE TABLE `abaturage` (
   `urugo_id` int(11) DEFAULT NULL,
   `icyiciro_cy_ubudehe` enum('A','B','C','D','E') DEFAULT NULL,
   `aho_ari` enum('Ariho','Yimukiye_Ahandi','Yitabye_Imana') DEFAULT 'Ariho',
-  `igihe_yanditswe` timestamp NOT NULL DEFAULT current_timestamp()
+  `igihe_yanditswe` timestamp NOT NULL DEFAULT current_timestamp(),
+  `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `abaturage`
 --
 
-INSERT INTO `abaturage` (`umuturage_id`, `izina_ribanza`, `izina_risoza`, `igitsina`, `itariki_y_amavuko`, `indangamuntu`, `telefone`, `isibo_id`, `urugo_id`, `icyiciro_cy_ubudehe`, `aho_ari`, `igihe_yanditswe`) VALUES
-(6, 'RUCAMUBYUMA ', 'VINCENT', 'Gabo', '1955-12-31', '1195680028285091', '0788255270', NULL, NULL, 'A', 'Ariho', '2025-11-11 05:43:13'),
-(14, 'boduen', 'niyonkuru', 'Gabo', '2025-11-09', '1195680028285093', '0788355366', NULL, NULL, 'A', 'Ariho', '2025-11-13 14:24:23');
+INSERT INTO `abaturage` (`umuturage_id`, `izina_ribanza`, `izina_risoza`, `igitsina`, `itariki_y_amavuko`, `indangamuntu`, `telefone`, `isibo_id`, `urugo_id`, `icyiciro_cy_ubudehe`, `aho_ari`, `igihe_yanditswe`, `user_id`) VALUES
+(6, 'RUCAMUBYUMA ', 'VINCENT', 'Gabo', '1955-12-31', '1195680028285091', '0788255270', NULL, NULL, 'A', 'Ariho', '2025-11-11 05:43:13', NULL),
+(14, 'boduen', 'niyonkuru', 'Gabo', '2025-11-09', '1195680028285093', '0788355366', NULL, NULL, 'A', 'Ariho', '2025-11-13 14:24:23', NULL),
+(15, 'RUCAMUBYUMA ', 'VINCENT', 'Gabo', '2025-12-08', '', '0785549152', NULL, NULL, 'A', 'Ariho', '2025-12-12 10:36:31', NULL),
+(16, 'RUCAMUBYUMA ', 'VINCENT', 'Gabo', '2025-12-08', '1195680028285034', '0785549152', NULL, NULL, 'A', 'Ariho', '2025-12-12 10:38:38', 8);
 
 -- --------------------------------------------------------
 
@@ -200,15 +195,16 @@ CREATE TABLE `abayobozi` (
   `inshingano` enum('Umukuru_w_Umudugudu','Ushinzwe_Imibereho','Umunyamabanga','Umuyobozi_w_Isibo') DEFAULT NULL,
   `itariki_yatangiye` date DEFAULT NULL,
   `itariki_yarangije` date DEFAULT NULL,
-  `umudugudu` varchar(100) DEFAULT NULL
+  `umudugudu` varchar(100) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `abayobozi`
 --
 
-INSERT INTO `abayobozi` (`umuyobozi_id`, `amazina_yose`, `telefone`, `inshingano`, `itariki_yatangiye`, `itariki_yarangije`, `umudugudu`) VALUES
-(8, 'ishimwe olive', '0792051387', 'Ushinzwe_Imibereho', '2025-11-10', '2025-11-10', 'karambi');
+INSERT INTO `abayobozi` (`umuyobozi_id`, `amazina_yose`, `telefone`, `inshingano`, `itariki_yatangiye`, `itariki_yarangije`, `umudugudu`, `user_id`) VALUES
+(8, 'ishimwe olive', '0792051387', 'Ushinzwe_Imibereho', '2025-11-10', '2025-11-10', 'karambi', NULL);
 
 -- --------------------------------------------------------
 
@@ -224,15 +220,16 @@ CREATE TABLE `documents` (
   `file_path` varchar(255) NOT NULL,
   `file_type` varchar(100) DEFAULT NULL,
   `uploaded_by` varchar(100) DEFAULT NULL,
-  `uploaded_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `uploaded_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `documents`
 --
 
-INSERT INTO `documents` (`id`, `title`, `description`, `file_name`, `file_path`, `file_type`, `uploaded_by`, `uploaded_at`) VALUES
-(1, 'mmm', 'nn', '', 'nnn', 'nnnn', ' nnnnn', '2025-11-25 08:37:06');
+INSERT INTO `documents` (`id`, `title`, `description`, `file_name`, `file_path`, `file_type`, `uploaded_by`, `uploaded_at`, `user_id`) VALUES
+(1, 'mmm', 'nn', '', 'nnn', 'nnnn', ' nnnnn', '2025-11-25 08:37:06', NULL);
 
 -- --------------------------------------------------------
 
@@ -247,7 +244,8 @@ CREATE TABLE `ibikorwa` (
   `itariki_y_igikorwa` date DEFAULT NULL,
   `icyiciro` enum('Umutekano','Iterambere','Isuku','Uburezi','Ubuzima','Ibindi') DEFAULT NULL,
   `umudugudu` varchar(100) DEFAULT NULL,
-  `byakozwe_na` varchar(100) DEFAULT NULL
+  `byakozwe_na` varchar(100) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -263,16 +261,17 @@ CREATE TABLE `imibereho_myiza` (
   `ibisobanuro` text DEFAULT NULL,
   `itariki_yatangiranye` date DEFAULT NULL,
   `imiterere_yayo` enum('Iri_gukorwa','Yarangiye') DEFAULT NULL,
-  `amazina_y_umuturage` varchar(255) DEFAULT NULL
+  `amazina_y_umuturage` varchar(255) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `imibereho_myiza`
 --
 
-INSERT INTO `imibereho_myiza` (`imibereho_id`, `umuturage_id`, `gahunda_yafashwemo`, `ibisobanuro`, `itariki_yatangiranye`, `imiterere_yayo`, `amazina_y_umuturage`) VALUES
-(31, '112223333444555577', 'kurwanya imirire mibi', 'ingamba kurwanya imirire mibi', '2025-11-18', 'Iri_gukorwa', 'boduen'),
-(32, '112223333444555577', 'kurwanya imirire mibi', 'nnnnnn', '2025-11-18', 'Yarangiye', 'boduen');
+INSERT INTO `imibereho_myiza` (`imibereho_id`, `umuturage_id`, `gahunda_yafashwemo`, `ibisobanuro`, `itariki_yatangiranye`, `imiterere_yayo`, `amazina_y_umuturage`, `user_id`) VALUES
+(31, '112223333444555577', 'kurwanya imirire mibi', 'ingamba kurwanya imirire mibi', '2025-11-18', 'Iri_gukorwa', 'boduen', NULL),
+(32, '112223333444555577', 'kurwanya imirire mibi', 'nnnnnn', '2025-11-18', 'Yarangiye', 'boduen', NULL);
 
 -- --------------------------------------------------------
 
@@ -293,15 +292,16 @@ CREATE TABLE `ingo` (
   `akagari` varchar(100) DEFAULT NULL,
   `umurenge` varchar(100) DEFAULT NULL,
   `akarere` varchar(100) DEFAULT NULL,
-  `igihe_yanditswe` timestamp NOT NULL DEFAULT current_timestamp()
+  `igihe_yanditswe` timestamp NOT NULL DEFAULT current_timestamp(),
+  `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `ingo`
 --
 
-INSERT INTO `ingo` (`urugo_id`, `umukuru_w_urugo`, `umubare_w_abagize`, `aho_batuye`, `ubwoko_bw_inzu`, `bafite_amazi`, `bafite_umuyoboro_wamashanyarazi`, `icyiciro_cy_ubudehe`, `umudugudu`, `akagari`, `umurenge`, `akarere`, `igihe_yanditswe`) VALUES
-(17, 'Mbanzabugabo celestin', 7, 'karambi', 'Iyabo', NULL, NULL, 'A', 'karambi', 'mataba', 'mageragere', 'nyarugenge', '2025-11-16 10:21:39');
+INSERT INTO `ingo` (`urugo_id`, `umukuru_w_urugo`, `umubare_w_abagize`, `aho_batuye`, `ubwoko_bw_inzu`, `bafite_amazi`, `bafite_umuyoboro_wamashanyarazi`, `icyiciro_cy_ubudehe`, `umudugudu`, `akagari`, `umurenge`, `akarere`, `igihe_yanditswe`, `user_id`) VALUES
+(17, 'Mbanzabugabo celestin', 7, 'karambi', 'Iyabo', NULL, NULL, 'A', 'karambi', 'mataba', 'mageragere', 'nyarugenge', '2025-11-16 10:21:39', NULL);
 
 -- --------------------------------------------------------
 
@@ -329,16 +329,9 @@ CREATE TABLE `isibo` (
   `izina_ry_isibo` varchar(100) DEFAULT NULL,
   `umuyobozi_w_isibo` varchar(100) DEFAULT NULL,
   `umubare_w_abaturage` int(11) DEFAULT NULL,
-  `umudugudu` varchar(100) DEFAULT NULL
+  `umudugudu` varchar(100) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `isibo`
---
-
-INSERT INTO `isibo` (`isibo_id`, `izina_ry_isibo`, `umuyobozi_w_isibo`, `umubare_w_abaturage`, `umudugudu`) VALUES
-(4, 'twiheshe agaciro', 'shyira iriburyio venisit', 444, 'karambi'),
-(5, 'twiheshe agaciro', 'shyira iriburyio venisit', 56, 'mataba');
 
 -- --------------------------------------------------------
 
@@ -367,7 +360,8 @@ CREATE TABLE `raporo` (
   `umubare_w_ingo` int(11) DEFAULT NULL,
   `abanyantege_nke` int(11) DEFAULT NULL,
   `yakozwe_na` varchar(100) DEFAULT NULL,
-  `umudugudu` varchar(100) DEFAULT NULL
+  `umudugudu` varchar(100) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -385,16 +379,18 @@ CREATE TABLE `ubukungu` (
   `afite_ubutaka` tinyint(1) DEFAULT NULL,
   `afite_amatungo` tinyint(1) DEFAULT NULL,
   `afite_konti_yo_kuzigama` tinyint(1) DEFAULT NULL,
-  `amazina_y_umuturage` varchar(255) DEFAULT NULL
+  `amazina_y_umuturage` varchar(255) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `uburezi` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `ubukungu`
 --
 
-INSERT INTO `ubukungu` (`ubukungu_id`, `umuturage_id`, `umurimo`, `aho_akorera`, `inkomoko_y_amafaranga`, `afite_ubutaka`, `afite_amatungo`, `afite_konti_yo_kuzigama`, `amazina_y_umuturage`) VALUES
-(26, 2147483647, 'ubwubatsi', 'naho', 'ibiraka', 1, 1, 1, 'mmmm'),
-(27, 2147483647, 'ubwubatsi', 'naho', 'ubuhinzi', 1, 0, 1, 'boduen');
+INSERT INTO `ubukungu` (`ubukungu_id`, `umuturage_id`, `umurimo`, `aho_akorera`, `inkomoko_y_amafaranga`, `afite_ubutaka`, `afite_amatungo`, `afite_konti_yo_kuzigama`, `amazina_y_umuturage`, `user_id`, `uburezi`) VALUES
+(26, 2147483647, 'ubwubatsi', 'naho', 'ibiraka', 1, 1, 1, 'mmmm', NULL, NULL),
+(27, 2147483647, 'ubwubatsi', 'naho', 'ubuhinzi', 1, 0, 1, 'boduen', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -407,15 +403,16 @@ CREATE TABLE `uburezi` (
   `urwego_rw_amashuri` enum('Ntago yize','Abanza','Ayisumbuye','Kaminuza','Ayisumbuye_Yisumbuye') DEFAULT NULL,
   `umwuga` varchar(100) DEFAULT NULL,
   `ishuri_yizemo` varchar(100) DEFAULT NULL,
-  `amazina_y_umuturage` varchar(255) DEFAULT NULL
+  `amazina_y_umuturage` varchar(255) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `uburezi`
 --
 
-INSERT INTO `uburezi` (`uburezi_id`, `urwego_rw_amashuri`, `umwuga`, `ishuri_yizemo`, `amazina_y_umuturage`) VALUES
-(12, 'Abanza', 'ubwubatsi', 'burema', 'boduen');
+INSERT INTO `uburezi` (`uburezi_id`, `urwego_rw_amashuri`, `umwuga`, `ishuri_yizemo`, `amazina_y_umuturage`, `user_id`) VALUES
+(12, 'Abanza', 'ubwubatsi', 'burema', 'boduen', NULL);
 
 -- --------------------------------------------------------
 
@@ -431,15 +428,9 @@ CREATE TABLE `ubuzima` (
   `afite_mutuelle` tinyint(1) DEFAULT NULL,
   `ubwoko_bwa_mutuelle` varchar(100) DEFAULT NULL,
   `ivuriro_ajyamo` varchar(100) DEFAULT NULL,
-  `amazina_y_umuturage` varchar(255) DEFAULT NULL
+  `amazina_y_umuturage` varchar(255) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `ubuzima`
---
-
-INSERT INTO `ubuzima` (`ubuzima_id`, `afite_ubumuga`, `ubwoko_bw_ubumuga`, `indwara_y_igihe_kirekire`, `afite_mutuelle`, `ubwoko_bwa_mutuelle`, `ivuriro_ajyamo`, `amazina_y_umuturage`) VALUES
-(20, 1, 'budakira', 'asima', 1, 'mituweli', 'nyarurenzi', 'mmmm');
 
 -- --------------------------------------------------------
 
@@ -485,15 +476,16 @@ CREATE TABLE `urubyiruko` (
   `aderesi` varchar(100) DEFAULT NULL,
   `id_number` varchar(25) DEFAULT NULL,
   `status` enum('Rufite akazi','Rudafite akazi') DEFAULT 'Rudafite akazi',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `urubyiruko`
 --
 
-INSERT INTO `urubyiruko` (`id`, `amazina`, `imyaka`, `igitsina`, `umurimo`, `nimero_ya_telephone`, `aderesi`, `id_number`, `status`, `created_at`) VALUES
-(2, 'niyonkuru boduen', 20, 'Gabo', 'software development', '0792652471', 'mukarambi', '1222333333333333', 'Rufite akazi', '2025-11-16 12:26:46');
+INSERT INTO `urubyiruko` (`id`, `amazina`, `imyaka`, `igitsina`, `umurimo`, `nimero_ya_telephone`, `aderesi`, `id_number`, `status`, `created_at`, `user_id`) VALUES
+(2, 'niyonkuru boduen', 20, 'Gabo', 'software development', '0792652471', 'mukarambi', '1222333333333333', 'Rufite akazi', '2025-11-16 12:26:46', NULL);
 
 -- --------------------------------------------------------
 
@@ -511,15 +503,16 @@ CREATE TABLE `urubyiruko_rudafite_akazi` (
   `impamvu_yubushomeri` varchar(200) DEFAULT NULL,
   `yigeze_kora` enum('Yego','Oya') DEFAULT 'Oya',
   `yifuza_umurimo_mwene` enum('Ubuhinzi','Ubwubatsi','Ikoranabuhanga','Ubucuruzi','Ikindi') DEFAULT 'Ikindi',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `urubyiruko_rudafite_akazi`
 --
 
-INSERT INTO `urubyiruko_rudafite_akazi` (`id`, `amazina`, `imyaka`, `igitsina`, `aderesi`, `nimero_ya_telephone`, `impamvu_yubushomeri`, `yigeze_kora`, `yifuza_umurimo_mwene`, `created_at`) VALUES
-(1, 'nn', 22, 'Gabo', 'nyarugenge ', '0798866554', 'hhhh', 'Yego', 'Ubuhinzi', '2025-11-16 13:25:14');
+INSERT INTO `urubyiruko_rudafite_akazi` (`id`, `amazina`, `imyaka`, `igitsina`, `aderesi`, `nimero_ya_telephone`, `impamvu_yubushomeri`, `yigeze_kora`, `yifuza_umurimo_mwene`, `created_at`, `user_id`) VALUES
+(1, 'nn', 22, 'Gabo', 'nyarugenge ', '0798866554', 'hhhh', 'Yego', 'Ubuhinzi', '2025-11-16 13:25:14', NULL);
 
 -- --------------------------------------------------------
 
@@ -536,15 +529,9 @@ CREATE TABLE `urubyiruko_rukora` (
   `nimero_ya_telephone` varchar(15) DEFAULT NULL,
   `aderesi` varchar(100) DEFAULT NULL,
   `ubuhanga` enum('Ikoranabuhanga','Ubucuruzi','Ubuhinzi','Ubwubatsi','Ikindi') DEFAULT 'Ikindi',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `urubyiruko_rukora`
---
-
-INSERT INTO `urubyiruko_rukora` (`id`, `amazina`, `imyaka`, `igitsina`, `umurimo`, `nimero_ya_telephone`, `aderesi`, `ubuhanga`, `created_at`) VALUES
-(1, 'boduen niyonkuru', 20, 'Gabo', 'software developer', '0792652471', 'karambi', 'Ikoranabuhanga', '2025-11-16 13:05:22');
 
 -- --------------------------------------------------------
 
@@ -553,7 +540,7 @@ INSERT INTO `urubyiruko_rukora` (`id`, `amazina`, `imyaka`, `igitsina`, `umurimo
 --
 
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `national_id` varchar(16) NOT NULL,
   `fullname` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
@@ -567,11 +554,9 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `national_id`, `fullname`, `email`, `telefone`, `password`, `role`, `created_at`) VALUES
-(2, '0987654321123456', 'peter', 'peter@gmail.com', '0790887665', '$2b$10$7h3KEulmtQBj9PfuP3U4GuJid2OQkSF0rhKKFaofxZllAlsKHHSPu', 'Bohejuru', '2025-10-27 05:53:39'),
-(4, '1234567891234567', 'kamanzi', 'kamanzi@gmail.com', '0789666554', '$2b$10$GYyZrwcxXdSF5RS9eTERieQcJ.gTWh4MCz3F6gekNsxpvSEhVvKom', 'Isibo', '2025-10-27 07:19:45'),
-(5, '1234567891234568', 'kamiri', 'kamiri@gmail.com', '0789953532', '$2b$10$LijpOoTtl.mXtn5Gx4bmvOv.r6BGFHVqRxWAP/imRSEJ5mUUxZhR6', 'Umunyamabanga', '2025-10-27 08:24:14'),
-(6, '1198380164826169', 'nsabimana naporewo', 'napoleonnsabimana@gmail.com', '0788287384', '$2b$10$V4caCogCYMsVYDEkHJfOsOcGZHuUKS45JI9KdNqm7ZYwhq.wW47jW', 'Mudugudu', '2025-11-11 05:16:25');
+INSERT INTO `users` (`user_id`, `national_id`, `fullname`, `email`, `telefone`, `password`, `role`, `created_at`) VALUES
+(8, '1234567890123456', 'boduen', 'boduen@gmail.com', '0792652471', '$2b$10$vOy.U6A47NyUIvOmXvLVVeAyCbp4uxDrXFlshUq3Jv4bPkVb3bTfC', 'Mudugudu', '2025-12-12 10:37:29'),
+(9, '1123456789009876', 'king boneri', 'niyonkuruboduensun@gmail.com', '0792652467', '$2b$10$vcpgrBiSVURBAQ4ofod7aeYkmsu3GibnvwSrIkd6C6bZGnSH7iQ5a', 'Mudugudu', '2025-12-12 10:39:55');
 
 --
 -- Indexes for dumped tables
@@ -581,76 +566,88 @@ INSERT INTO `users` (`id`, `national_id`, `fullname`, `email`, `telefone`, `pass
 -- Indexes for table `abagore_batwite`
 --
 ALTER TABLE `abagore_batwite`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_abagore_user` (`user_id`);
 
 --
 -- Indexes for table `abakobwa_babyaye`
 --
 ALTER TABLE `abakobwa_babyaye`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_abakobwa_user` (`user_id`);
 
 --
 -- Indexes for table `abakoresha`
 --
 ALTER TABLE `abakoresha`
   ADD PRIMARY KEY (`umukoresha_id`),
-  ADD UNIQUE KEY `izina_rikoresha` (`izina_rikoresha`);
+  ADD UNIQUE KEY `izina_rikoresha` (`izina_rikoresha`),
+  ADD KEY `fk_abakoresha_user` (`user_id`);
 
 --
 -- Indexes for table `abana`
 --
 ALTER TABLE `abana`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_abana_user` (`user_id`);
 
 --
 -- Indexes for table `abana_barimwo_mirire_mibi`
 --
 ALTER TABLE `abana_barimwo_mirire_mibi`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_abana_barimwo_mirire_mibi_user` (`user_id`);
 
 --
 -- Indexes for table `abasheshe_akanguhe`
 --
 ALTER TABLE `abasheshe_akanguhe`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_abasheshe_akanguhe_user` (`user_id`);
 
 --
 -- Indexes for table `abaturage`
 --
 ALTER TABLE `abaturage`
   ADD PRIMARY KEY (`umuturage_id`),
-  ADD UNIQUE KEY `indangamuntu` (`indangamuntu`);
+  ADD UNIQUE KEY `indangamuntu` (`indangamuntu`),
+  ADD KEY `fk_abaturage_user` (`user_id`);
 
 --
 -- Indexes for table `abayobozi`
 --
 ALTER TABLE `abayobozi`
-  ADD PRIMARY KEY (`umuyobozi_id`);
+  ADD PRIMARY KEY (`umuyobozi_id`),
+  ADD KEY `fk_abayobozi_user` (`user_id`);
 
 --
 -- Indexes for table `documents`
 --
 ALTER TABLE `documents`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_documents_user` (`user_id`);
 
 --
 -- Indexes for table `ibikorwa`
 --
 ALTER TABLE `ibikorwa`
-  ADD PRIMARY KEY (`igikorwa_id`);
+  ADD PRIMARY KEY (`igikorwa_id`),
+  ADD KEY `fk_ibikorwa_user` (`user_id`);
 
 --
 -- Indexes for table `imibereho_myiza`
 --
 ALTER TABLE `imibereho_myiza`
   ADD PRIMARY KEY (`imibereho_id`),
-  ADD KEY `umuturage_id` (`umuturage_id`);
+  ADD KEY `umuturage_id` (`umuturage_id`),
+  ADD KEY `fk_imibereho_myiza_user` (`user_id`);
 
 --
 -- Indexes for table `ingo`
 --
 ALTER TABLE `ingo`
-  ADD PRIMARY KEY (`urugo_id`);
+  ADD PRIMARY KEY (`urugo_id`),
+  ADD KEY `fk_ingo_user` (`user_id`);
 
 --
 -- Indexes for table `inkunga_leta`
@@ -663,7 +660,8 @@ ALTER TABLE `inkunga_leta`
 -- Indexes for table `isibo`
 --
 ALTER TABLE `isibo`
-  ADD PRIMARY KEY (`isibo_id`);
+  ADD PRIMARY KEY (`isibo_id`),
+  ADD KEY `fk_isibo_user` (`user_id`);
 
 --
 -- Indexes for table `message`
@@ -676,26 +674,30 @@ ALTER TABLE `message`
 -- Indexes for table `raporo`
 --
 ALTER TABLE `raporo`
-  ADD PRIMARY KEY (`raporo_id`);
+  ADD PRIMARY KEY (`raporo_id`),
+  ADD KEY `fk_raporo_user` (`user_id`);
 
 --
 -- Indexes for table `ubukungu`
 --
 ALTER TABLE `ubukungu`
   ADD PRIMARY KEY (`ubukungu_id`),
-  ADD KEY `umuturage_id` (`umuturage_id`);
+  ADD KEY `umuturage_id` (`umuturage_id`),
+  ADD KEY `fk_ubukungu_user` (`user_id`);
 
 --
 -- Indexes for table `uburezi`
 --
 ALTER TABLE `uburezi`
-  ADD PRIMARY KEY (`uburezi_id`);
+  ADD PRIMARY KEY (`uburezi_id`),
+  ADD KEY `fk_uburezi_user` (`user_id`);
 
 --
 -- Indexes for table `ubuzima`
 --
 ALTER TABLE `ubuzima`
-  ADD PRIMARY KEY (`ubuzima_id`);
+  ADD PRIMARY KEY (`ubuzima_id`),
+  ADD KEY `fk_ubuzima_user` (`user_id`);
 
 --
 -- Indexes for table `umusanzu_ejoheza`
@@ -715,25 +717,28 @@ ALTER TABLE `umusanzu_fpr`
 -- Indexes for table `urubyiruko`
 --
 ALTER TABLE `urubyiruko`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_urubyiruko_fpr_user` (`user_id`);
 
 --
 -- Indexes for table `urubyiruko_rudafite_akazi`
 --
 ALTER TABLE `urubyiruko_rudafite_akazi`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_urubyiruko_rudafite_akazi_fpr_user` (`user_id`);
 
 --
 -- Indexes for table `urubyiruko_rukora`
 --
 ALTER TABLE `urubyiruko_rukora`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_urubyiruko_rukora_fpr_user` (`user_id`);
 
 --
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
+  ADD PRIMARY KEY (`user_id`),
   ADD UNIQUE KEY `national_id` (`national_id`),
   ADD UNIQUE KEY `email` (`email`),
   ADD UNIQUE KEY `telefone` (`telefone`);
@@ -746,13 +751,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `abagore_batwite`
 --
 ALTER TABLE `abagore_batwite`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `abakobwa_babyaye`
 --
 ALTER TABLE `abakobwa_babyaye`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `abakoresha`
@@ -764,37 +769,37 @@ ALTER TABLE `abakoresha`
 -- AUTO_INCREMENT for table `abana`
 --
 ALTER TABLE `abana`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `abana_barimwo_mirire_mibi`
 --
 ALTER TABLE `abana_barimwo_mirire_mibi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `abasheshe_akanguhe`
 --
 ALTER TABLE `abasheshe_akanguhe`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `abaturage`
 --
 ALTER TABLE `abaturage`
-  MODIFY `umuturage_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `umuturage_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `abayobozi`
 --
 ALTER TABLE `abayobozi`
-  MODIFY `umuyobozi_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `umuyobozi_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `documents`
 --
 ALTER TABLE `documents`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `ibikorwa`
@@ -806,13 +811,13 @@ ALTER TABLE `ibikorwa`
 -- AUTO_INCREMENT for table `imibereho_myiza`
 --
 ALTER TABLE `imibereho_myiza`
-  MODIFY `imibereho_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `imibereho_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `ingo`
 --
 ALTER TABLE `ingo`
-  MODIFY `urugo_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `urugo_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `inkunga_leta`
@@ -824,7 +829,7 @@ ALTER TABLE `inkunga_leta`
 -- AUTO_INCREMENT for table `isibo`
 --
 ALTER TABLE `isibo`
-  MODIFY `isibo_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `isibo_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `message`
@@ -842,19 +847,19 @@ ALTER TABLE `raporo`
 -- AUTO_INCREMENT for table `ubukungu`
 --
 ALTER TABLE `ubukungu`
-  MODIFY `ubukungu_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `ubukungu_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `uburezi`
 --
 ALTER TABLE `uburezi`
-  MODIFY `uburezi_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `uburezi_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `ubuzima`
 --
 ALTER TABLE `ubuzima`
-  MODIFY `ubuzima_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `ubuzima_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `umusanzu_ejoheza`
@@ -872,53 +877,177 @@ ALTER TABLE `umusanzu_fpr`
 -- AUTO_INCREMENT for table `urubyiruko`
 --
 ALTER TABLE `urubyiruko`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `urubyiruko_rudafite_akazi`
 --
 ALTER TABLE `urubyiruko_rudafite_akazi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `urubyiruko_rukora`
 --
 ALTER TABLE `urubyiruko_rukora`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
 --
 
 --
+-- Constraints for table `abagore_batwite`
+--
+ALTER TABLE `abagore_batwite`
+  ADD CONSTRAINT `fk_abagore_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Constraints for table `abakobwa_babyaye`
+--
+ALTER TABLE `abakobwa_babyaye`
+  ADD CONSTRAINT `fk_abakobwa_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Constraints for table `abakoresha`
+--
+ALTER TABLE `abakoresha`
+  ADD CONSTRAINT `fk_abakoresha_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Constraints for table `abana`
+--
+ALTER TABLE `abana`
+  ADD CONSTRAINT `fk_abana_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Constraints for table `abana_barimwo_mirire_mibi`
+--
+ALTER TABLE `abana_barimwo_mirire_mibi`
+  ADD CONSTRAINT `fk_abana_barimwo_mirire_mibi_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Constraints for table `abasheshe_akanguhe`
+--
+ALTER TABLE `abasheshe_akanguhe`
+  ADD CONSTRAINT `fk_abasheshe_akanguhe_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Constraints for table `abaturage`
+--
+ALTER TABLE `abaturage`
+  ADD CONSTRAINT `fk_abaturage_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Constraints for table `abayobozi`
+--
+ALTER TABLE `abayobozi`
+  ADD CONSTRAINT `fk_abayobozi_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Constraints for table `documents`
+--
+ALTER TABLE `documents`
+  ADD CONSTRAINT `fk_documents_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Constraints for table `ibikorwa`
+--
+ALTER TABLE `ibikorwa`
+  ADD CONSTRAINT `fk_ibikorwa_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Constraints for table `imibereho_myiza`
+--
+ALTER TABLE `imibereho_myiza`
+  ADD CONSTRAINT `fk_imibereho_myiza_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Constraints for table `ingo`
+--
+ALTER TABLE `ingo`
+  ADD CONSTRAINT `fk_ingo_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
 -- Constraints for table `inkunga_leta`
 --
 ALTER TABLE `inkunga_leta`
-  ADD CONSTRAINT `inkunga_leta_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `fk_inkunga_leta_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
+  ADD CONSTRAINT `inkunga_leta_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Constraints for table `isibo`
+--
+ALTER TABLE `isibo`
+  ADD CONSTRAINT `fk_isibo_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
 --
 -- Constraints for table `message`
 --
 ALTER TABLE `message`
-  ADD CONSTRAINT `message_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `fk_message_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
+  ADD CONSTRAINT `message_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Constraints for table `raporo`
+--
+ALTER TABLE `raporo`
+  ADD CONSTRAINT `fk_raporo_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Constraints for table `ubukungu`
+--
+ALTER TABLE `ubukungu`
+  ADD CONSTRAINT `fk_ubukungu_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Constraints for table `uburezi`
+--
+ALTER TABLE `uburezi`
+  ADD CONSTRAINT `fk_uburezi_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Constraints for table `ubuzima`
+--
+ALTER TABLE `ubuzima`
+  ADD CONSTRAINT `fk_ubuzima_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
 --
 -- Constraints for table `umusanzu_ejoheza`
 --
 ALTER TABLE `umusanzu_ejoheza`
-  ADD CONSTRAINT `umusanzu_ejoheza_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `fk_umusanzu_ejoheza_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
+  ADD CONSTRAINT `umusanzu_ejoheza_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
 --
 -- Constraints for table `umusanzu_fpr`
 --
 ALTER TABLE `umusanzu_fpr`
-  ADD CONSTRAINT `umusanzu_fpr_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `fk_umusanzu_fpr_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
+  ADD CONSTRAINT `umusanzu_fpr_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Constraints for table `urubyiruko`
+--
+ALTER TABLE `urubyiruko`
+  ADD CONSTRAINT `fk_urubyiruko_fpr_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Constraints for table `urubyiruko_rudafite_akazi`
+--
+ALTER TABLE `urubyiruko_rudafite_akazi`
+  ADD CONSTRAINT `fk_urubyiruko_rudafite_akazi_fpr_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Constraints for table `urubyiruko_rukora`
+--
+ALTER TABLE `urubyiruko_rukora`
+  ADD CONSTRAINT `fk_urubyiruko_rukora_fpr_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
