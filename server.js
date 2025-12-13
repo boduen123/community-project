@@ -108,195 +108,254 @@ app.get("/profile", (req, res) => {
   res.json({ message: "Protected data", user_id: req.user.id, role: req.user.role });
 });
 
-// MESSAGE ENDPOINTS
+// ===== MESSAGE ENDPOINTS =====
 
-app.post("/message/:id",(req,res)=>{
-  const data = [
-    message.req.body,
-    user.req.params
-  ]
-  const sql = "INSERT INTO message(test_user,user_id) VALUES (?)";
-  db.query(sql,data,(err,result)=>{
-    if (err) return res.status(500).json({error:err});
-    return res.json({message:"Message yoherejwe neza"})
-  })
-})
+// Create a message for the currently logged-in user
+// POST /message
+app.post("/message", (req, res) => {
+  const { text_user } = req.body;
+  const userId = req.user?.id; // user_id from auth
 
-app.get("/message_as_bohejuru",(req,res)=>{
-  const data = user.rep.params;
-  const sql = "SELECT * FROM message";
-  db.query(sql,data,(err,result)=>{
-    if (err) return res.json(err);
-    res.json(result)
-  })
-})
+  if (!text_user) {
+    return res.status(400).json({ error: "text_user is required" });
+  }
+  if (!userId) {
+    return res.status(401).json({ error: "User not authenticated" });
+  }
 
-app.get("/message/:id",(req,res)=>{
-  const data = user.rep.params;
-  const sql = "SELECT * FROM message WHERE user_id =?";
-  db.query(sql,data,(err,result)=>{
-    if (err) return res.json(err);
-    res.json(result)
-  })
-})
+  const sql = "INSERT INTO message (text_user, user_id) VALUES (?, ?)";
+  const values = [text_user, userId];
 
-// UMUSANZU FPR ENDPOINT
-
-app.post("/umusanzu_fpr/:id",(req,res)=>{
-  const data = [
-    umuturage.req.body,
-    amafaranga.req.body,
-    itariki.req.body,
-    user.req.params
-  ]
-  const sql = "INSERT INTO umusanzu_fpr(umuturage,amafaranga,itariki,user_id) VALUES (?)";
-  db.query(sql,data,(err,result)=>{
-    if (err) return res.status(500).json({error:err});
-    return res.json({message:"Umusanzu wanditswe neza"})
-  })
-})
-
-app.get("/umusanzu_fpr/:id",(req,res)=>{
-  const data = user.rep.params;
-  const sql = "SELECT * FROM umusanzu_fpr WHERE user_id =?";
-  db.query(sql,data,(err,result)=>{
-    if (err) return res.json(err);
-    res.json(result)
-  })
-})
-
-app.put("/umusanzu_fpr/:id", (req, res) => {
-  const { id } = req.params;
-  const d = req.body;
-  // Update only if it belongs to user_id
-  const sql = `
-    UPDATE umusanzu_fpr SET 
-    umuturage=?,amafaranga=?,itariki
-    WHERE id=? AND user_id=?
-  `;
-  db.query(sql, [d.umuturage,d.amafaranga,d.itariki, id, req.user.id],
-    (err, result) => {
-      if (err) return res.status(500).json({ error: err });
-      if (result.affectedRows === 0) return res.status(403).json({ error: "Ntibyemewe guhindura uyu musanzu" });
-      res.json({ message: "✏️ Amakuru y'umusanzu yavuguruwe neza!" });
+  db.query(sql, values, (err, result) => {
+    if (err) {
+      console.error("DB insert error (message):", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+    return res.json({
+      message: "Message yoherejwe neza",
+      id: result.insertId,
     });
-});
-
-app.delete("/umusanzu_fpr/:id", (req, res) => {
-  const { id } = req.params;
-  // Delete only if it belongs to user_id
-  db.query("DELETE FROM umusanzu_fpr WHERE id = ? AND user_id = ?", [id, req.user.id], (err, result) => {
-    if (err) return res.status(500).json({ error: err });
-    if (result.affectedRows === 0) return res.status(403).json({ error: "Ntibyemewe gusiba uyu musanzu" });
-    res.json({ message: "🗑️ Umusanzu wasibwe neza!" });
   });
 });
 
-// UMUSANZU ejoheza ENDPOINT
+// Get messages only for the currently logged-in user
+// GET /message
+app.get("/message", (req, res) => {
+  const userId = req.user?.id;
 
-app.post("/umusanzu_ejoheza/:id",(req,res)=>{
-  const data = [
-    umuturage.req.body,
-    amafaranga.req.body,
-    itariki.req.body,
-    user.req.params
-  ]
-  const sql = "INSERT INTO umusanzu_ejoheza(umuturage,amafaranga,itariki,user_id) VALUES (?)";
-  db.query(sql,data,(err,result)=>{
-    if (err) return res.status(500).json({error:err});
-    return res.json({message:"Umusanzu wanditswe neza"})
-  })
-})
+  if (!userId) {
+    return res.status(401).json({ error: "User not authenticated" });
+  }
 
-app.get("/umusanzu_ejoheza/:id",(req,res)=>{
-  const data = user.rep.params;
-  const sql = "SELECT * FROM umusanzu_ejoheza WHERE user_id =?";
-  db.query(sql,data,(err,result)=>{
-    if (err) return res.json(err);
-    res.json(result)
-  })
-})
+  const sql =
+    "SELECT id, text_user, user_id FROM message WHERE user_id = ? ORDER BY id DESC";
 
-app.put("/umusanzu_fpr/:id", (req, res) => {
-  const { id } = req.params;
-  const d = req.body;
-  // Update only if it belongs to user_id
-  const sql = `
-    UPDATE umusanzu_ejoheza SET 
-    umuturage=?,amafaranga=?,itariki
-    WHERE id=? AND user_id=?
-  `;
-  db.query(sql, [d.umuturage,d.amafaranga,d.itariki, id, req.user.id],
-    (err, result) => {
-      if (err) return res.status(500).json({ error: err });
-      if (result.affectedRows === 0) return res.status(403).json({ error: "Ntibyemewe guhindura uyu musanzu" });
-      res.json({ message: "✏️ Amakuru y'umusanzu yavuguruwe neza!" });
-    });
+  db.query(sql, [userId], (err, results) => {
+    if (err) {
+      console.error("DB select error (message):", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+    res.json(results);
+  });
 });
 
+
+
+
+
+
+// ===== UMUSANZU EJO HEZA ENDPOINTS =====
+
+// Create a new Ejo Heza contribution for the CURRENTLY LOGGED-IN user
+// POST /umusanzu_ejoheza
+app.post("/umusanzu_ejoheza", (req, res) => {
+  const { umuturage, amafaranga, itariki } = req.body;
+  const userId = req.user?.id; // user_id from auth middleware
+
+  if (!umuturage || !amafaranga || !itariki) {
+    return res.status(400).json({ error: "Injiza umuturage, amafaranga na itariki." });
+  }
+  if (!userId) {
+    return res.status(401).json({ error: "User not authenticated" });
+  }
+
+  const sql = "INSERT INTO umusanzu_ejoheza (umuturage, amafaranga, itariki, user_id) VALUES (?, ?, ?, ?)";
+  const values = [umuturage, amafaranga, itariki, userId];
+
+  db.query(sql, values, (err, result) => {
+    if (err) {
+      console.error("DB insert error (umusanzu_ejoheza):", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+    return res.json({ message: "Umusanzu wanditswe neza", id: result.insertId });
+  });
+});
+
+// Get all Ejo Heza contributions for the CURRENTLY LOGGED-IN user
+// GET /umusanzu_ejoheza
+app.get("/umusanzu_ejoheza", (req, res) => {
+  const userId = req.user?.id;
+
+  if (!userId) {
+    return res.status(401).json({ error: "User not authenticated" });
+  }
+
+  const sql = "SELECT id, umuturage, amafaranga, itariki FROM umusanzu_ejoheza WHERE user_id = ? ORDER BY itariki DESC, id DESC";
+
+  db.query(sql, [userId], (err, results) => {
+    if (err) {
+      console.error("DB select error (umusanzu_ejoheza):", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+    res.json(results);
+  });
+});
+
+// Update Ejo Heza record (only if belongs to user)
+// PUT /umusanzu_ejoheza/:id
+app.put("/umusanzu_ejoheza/:id", (req, res) => {
+  const { id } = req.params;
+  const { umuturage, amafaranga, itariki } = req.body;
+  const userId = req.user?.id;
+
+  if (!userId) return res.status(401).json({ error: "User not authenticated" });
+
+  const sql = "UPDATE umusanzu_ejoheza SET umuturage=?, amafaranga=?, itariki=? WHERE id=? AND user_id=?";
+  
+  db.query(sql, [umuturage, amafaranga, itariki, id, userId], (err, result) => {
+    if (err) return res.status(500).json({ error: err });
+    if (result.affectedRows === 0) return res.status(403).json({ error: "Ntibyemewe guhindura uyu musanzu" });
+    res.json({ message: "Amakuru yavuguruwe neza!" });
+  });
+});
+
+// Delete Ejo Heza record (only if belongs to user)
+// DELETE /umusanzu_ejoheza/:id
 app.delete("/umusanzu_ejoheza/:id", (req, res) => {
   const { id } = req.params;
-  // Delete only if it belongs to user_id
-  db.query("DELETE FROM umusanzu_ejoheza WHERE id = ? AND user_id = ?", [id, req.user.id], (err, result) => {
+  const userId = req.user?.id;
+
+  if (!userId) return res.status(401).json({ error: "User not authenticated" });
+  
+  db.query("DELETE FROM umusanzu_ejoheza WHERE id = ? AND user_id = ?", [id, userId], (err, result) => {
     if (err) return res.status(500).json({ error: err });
     if (result.affectedRows === 0) return res.status(403).json({ error: "Ntibyemewe gusiba uyu musanzu" });
-    res.json({ message: "🗑️ Umusanzu wasibwe neza!" });
+    res.json({ message: "Umusanzu wasibwe neza!" });
+  });
+});
+// ===== INKUNGA LETA ENDPOINTS =====
+
+// Create a new inkunga for current user
+// POST /inkunga_leta
+app.post("/inkunga_leta", (req, res) => {
+  const { umuturage, ubwoko, amount, itariki } = req.body;
+  const userId = req.user?.id;
+
+  if (!umuturage || !ubwoko || !amount || !itariki) {
+    return res
+      .status(400)
+      .json({ error: "Injiza umuturage, ubwoko, amafaranga na itariki." });
+  }
+  if (!userId) {
+    return res.status(401).json({ error: "User not authenticated" });
+  }
+
+  const sql =
+    "INSERT INTO inkunga_leta (umuturage, ubwoko, amount, itariki, user_id) VALUES (?, ?, ?, ?, ?)";
+  const values = [umuturage, ubwoko, amount, itariki, userId];
+
+  db.query(sql, values, (err, result) => {
+    if (err) {
+      console.error("DB insert error (inkunga_leta):", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+    return res.json({
+      message: "Inkunga yanditswe neza",
+      id: result.insertId,
+    });
   });
 });
 
-// inkunga leta ENDPOINT
+// Get all inkunga for current user
+// GET /inkunga_leta
+app.get("/inkunga_leta", (req, res) => {
+  const userId = req.user?.id;
 
-app.post("/inkunga_leta/:id",(req,res)=>{
-  const data = [
-    umuturage.req.body,
-    ubwoko.req.body,
-    amount.req.body,
-    itariki.req.body,
-    user.req.params
-  ]
-  const sql = "INSERT INTO inkunga_leta(umuturage,ubwoko,amount,itariki,user_id) VALUES (?)";
-  db.query(sql,data,(err,result)=>{
-    if (err) return res.status(500).json({error:err});
-    return res.json({message:"inkungu yanditswe neza"})
-  })
-})
+  if (!userId) {
+    return res.status(401).json({ error: "User not authenticated" });
+  }
 
-app.get("/inkunga_leta/:id",(req,res)=>{
-  const data = user.rep.params;
-  const sql = "SELECT * FROM inkunga_leta WHERE user_id =?";
-  db.query(sql,data,(err,result)=>{
-    if (err) return res.json(err);
-    res.json(result)
-  })
-})
+  const sql =
+    "SELECT id, umuturage, ubwoko, amount, itariki, user_id FROM inkunga_leta WHERE user_id = ? ORDER BY itariki DESC, id DESC";
 
+  db.query(sql, [userId], (err, results) => {
+    if (err) {
+      console.error("DB select error (inkunga_leta):", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+    res.json(results);
+  });
+});
+
+// OPTIONAL: Update
 app.put("/inkunga_leta/:id", (req, res) => {
   const { id } = req.params;
-  const d = req.body;
-  // Update only if it belongs to user_id
-  const sql = `
-    UPDATE inkunga_leta SET 
-    umuturage=?,ubwoko=?,amount=?,itariki
-    WHERE id=? AND user_id=?
-  `;
-  db.query(sql, [d.umuturage,d.ubwoko,d.amount,d.itariki, id, req.user.id],
+  const { umuturage, ubwoko, amount, itariki } = req.body;
+  const userId = req.user?.id;
+
+  if (!umuturage || !ubwoko || !amount || !itariki) {
+    return res
+      .status(400)
+      .json({ error: "Injiza umuturage, ubwoko, amafaranga na itariki." });
+  }
+  if (!userId) {
+    return res.status(401).json({ error: "User not authenticated" });
+  }
+
+  const sql =
+    "UPDATE inkunga_leta SET umuturage = ?, ubwoko = ?, amount = ?, itariki = ? WHERE id = ? AND user_id = ?";
+
+  db.query(
+    sql,
+    [umuturage, ubwoko, amount, itariki, id, userId],
     (err, result) => {
-      if (err) return res.status(500).json({ error: err });
-      if (result.affectedRows === 0) return res.status(403).json({ error: "Ntibyemewe guhindura iyi nkunga" });
+      if (err) {
+        console.error("DB update error (inkunga_leta):", err);
+        return res.status(500).json({ error: "Database error" });
+      }
+      if (result.affectedRows === 0) {
+        return res
+          .status(403)
+          .json({ error: "Ntibyemewe guhindura iyi nkunga cyangwa ntibonetse" });
+      }
       res.json({ message: "✏️ Amakuru y'inkunga yavuguruwe neza!" });
-    });
+    }
+  );
 });
 
+// OPTIONAL: Delete
 app.delete("/inkunga_leta/:id", (req, res) => {
   const { id } = req.params;
-  // Delete only if it belongs to user_id
-  db.query("DELETE FROM inkunga_leta WHERE id = ? AND user_id = ?", [id, req.user.id], (err, result) => {
-    if (err) return res.status(500).json({ error: err });
-    if (result.affectedRows === 0) return res.status(403).json({ error: "Ntibyemewe gusiba iyi nkunga" });
-    res.json({ message: "🗑️ Inkunga yasibwe neza!" });
-  });
-});
+  const userId = req.user?.id;
 
+  if (!userId) {
+    return res.status(401).json({ error: "User not authenticated" });
+  }
+
+  db.query(
+    "DELETE FROM inkunga_leta WHERE id = ? AND user_id = ?",
+    [id, userId],
+    (err, result) => {
+      if (err) return res.status(500).json({ error: err });
+      if (result.affectedRows === 0) {
+        return res
+          .status(403)
+          .json({ error: "Ntibyemewe gusiba iyi nkunga cyangwa ntibaho" });
+      }
+      res.json({ message: "🗑️ Inkunga yasibwe neza!" });
+    }
+  );
+});
 // ============================================================
 // 🧍‍♂️ ABATURAGE ENDPOINTS (SECURED)
 // ============================================================

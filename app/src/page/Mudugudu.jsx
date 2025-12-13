@@ -14,6 +14,11 @@ import Uburezi from "./Uburezi";
 import Ubuzima from "./Ubuzima";
 import Abaturage from "./Abaturage";
 
+// ===== NEW IMPORTS =====
+// Umusanzu imports removed as requested
+import Message from "./Message";
+import AbaturageBafiteInkunguzaleta from "./AbaturageBafiteInkunguzaleta";
+
 /* ===== Enhanced Global Styles ===== */
 const GlobalStyles = () => {
   useEffect(() => {
@@ -874,7 +879,6 @@ const PaymentReport = () => {
   const paymentCode = "1759342";
   const bankAccount = "XXX-XXXX-XXXX (Shyiramo konti nyayo ya banki yawe)";
   const phone = "0792652471";
-  // ⚠️ CHANGE APPLIED HERE: Value updated from 500 to 2000
   const serviceFee = 2000; 
   const period = "Buri kwezi";
   const [copied, setCopied] = useState(false);
@@ -1112,6 +1116,11 @@ const Dashboard = ({ user }) => {
     { key: "ubukungu", label: "Ubukungu", icon: "bi-currency-exchange", content: () => <Ubukungu /> },
     { key: "uburezi", label: "Uburezi", icon: "bi-mortarboard-fill", content: () => <Uburezi /> },
     { key: "ubuzima", label: "Ubuzima", icon: "bi-heart-pulse-fill", content: () => <Ubuzima /> },
+    // ===== NAVIGATION ITEMS UPDATED =====
+    // Removed FPR and Ejo Heza from navigation list
+    { key: "inkunga", label: "Inkunga za Leta", icon: "bi-gift-fill", content: () => <AbaturageBafiteInkunguzaleta /> },
+    { key: "message", label: "Ubutumwa", icon: "bi-chat-dots-fill", content: () => <Message /> },
+    // ===========================================
     { key: "payment", label: "Kwishyura", icon: "bi-credit-card-2-front-fill", content: () => <PaymentReport /> },
   ];
 
