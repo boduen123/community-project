@@ -13,11 +13,12 @@ import Ubukungu from "./Ubukungu";
 import Uburezi from "./Uburezi";
 import Ubuzima from "./Ubuzima";
 import Abaturage from "./Abaturage";
-
-// ===== NEW IMPORTS =====
-// Umusanzu imports removed as requested
 import Message from "./Message";
 import AbaturageBafiteInkunguzaleta from "./AbaturageBafiteInkunguzaleta";
+
+// ===== NEW IMPORTS ADDED HERE =====
+import UmusanzuFPR from "./UmusanzuFPR"; 
+import UmusanzuEjoheza from "./UmusanzuEjoheza";
 
 /* ===== Enhanced Global Styles ===== */
 const GlobalStyles = () => {
@@ -1116,11 +1117,12 @@ const Dashboard = ({ user }) => {
     { key: "ubukungu", label: "Ubukungu", icon: "bi-currency-exchange", content: () => <Ubukungu /> },
     { key: "uburezi", label: "Uburezi", icon: "bi-mortarboard-fill", content: () => <Uburezi /> },
     { key: "ubuzima", label: "Ubuzima", icon: "bi-heart-pulse-fill", content: () => <Ubuzima /> },
-    // ===== NAVIGATION ITEMS UPDATED =====
-    // Removed FPR and Ejo Heza from navigation list
     { key: "inkunga", label: "Inkunga za Leta", icon: "bi-gift-fill", content: () => <AbaturageBafiteInkunguzaleta /> },
+    // ===== NAVIGATION ITEMS ADDED =====
+    { key: "umusanzuFPR", label: "Umusanzu FPR", icon: "bi-flag-fill", content: () => <UmusanzuFPR /> },
+    { key: "umusanzuEjoheza", label: "Umusanzu EjoHeza", icon: "bi-piggy-bank-fill", content: () => <UmusanzuEjoheza /> },
+    // ==================================
     { key: "message", label: "Ubutumwa", icon: "bi-chat-dots-fill", content: () => <Message /> },
-    // ===========================================
     { key: "payment", label: "Kwishyura", icon: "bi-credit-card-2-front-fill", content: () => <PaymentReport /> },
   ];
 

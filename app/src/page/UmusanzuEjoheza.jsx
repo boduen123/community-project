@@ -1,247 +1,545 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
-const API_URL = "http://localhost:5000/umusanzu_ejoheza";
+// -----------------------------------------------------------------------------
+// MODERN UI STYLES
+// -----------------------------------------------------------------------------
+const modernStyles = `
+  :root {
+    --primary: #16a34a;
+    --primary-light: #ecfdf5;
+    --primary-dark: #15803d;
+    --success: #10b981;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-600: #4b5563;
+    --gray-800: #1f2937;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --radius: 1rem;
+    --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
 
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: var(--gray-800);
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    transition: var(--transition);
+  }
+
+  .glass-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+
+  .form-control, .form-select {
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--gray-200);
+    background-color: var(--gray-50);
+    transition: var(--transition);
+    font-size: 0.95rem;
+  }
+
+  .form-control:focus {
+    background-color: #fff;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.1);
+  }
+
+  .btn-modern {
+    border-radius: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+    transition: var(--transition);
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .btn-modern:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow);
+  }
+
+  .btn-modern:active {
+    transform: translateY(0);
+  }
+
+  .btn-success-gradient {
+    background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+    color: white;
+  }
+
+  .btn-success-gradient:hover {
+    background: linear-gradient(135deg, #15803d 0%, #166534 100%);
+    color: white;
+  }
+
+  .table-modern {
+    background: white;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+  }
+
+  .table-modern thead th {
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--gray-200);
+  }
+
+  .table-modern tbody tr {
+    transition: background-color 0.15s;
+  }
+
+  .table-modern tbody tr:hover {
+    background-color: #f0fdf4;
+  }
+
+  .table-modern td {
+    padding: 1rem 1.5rem;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--gray-100);
+    color: var(--gray-600);
+  }
+
+  .table-modern tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .avatar-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1rem;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .badge-modern {
+    padding: 0.35rem 0.75rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.025em;
+  }
+
+  .action-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    border: none;
+    cursor: pointer;
+    background: transparent;
+  }
+
+  .action-btn:hover {
+    background-color: var(--gray-100);
+    transform: scale(1.1);
+  }
+
+  .action-btn.edit { color: var(--warning); }
+  .action-btn.edit:hover { background-color: #fffbeb; }
+
+  .action-btn.delete { color: var(--danger); }
+  .action-btn.delete:hover { background-color: #fef2f2; }
+
+  .empty-state {
+    padding: 4rem 2rem;
+    text-align: center;
+    color: var(--gray-600);
+  }
+
+  .empty-state-icon {
+    font-size: 3.5rem;
+    color: var(--gray-200);
+    margin-bottom: 1rem;
+  }
+
+  /* Search Input Styling */
+  .search-wrapper {
+    position: relative;
+    max-width: 300px;
+    width: 100%;
+  }
+  .search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gray-600);
+    pointer-events: none;
+  }
+  .search-input {
+    padding-left: 2.5rem !important;
+    border-radius: 9999px !important;
+    background-color: white !important;
+    border: 1px solid var(--gray-200) !important;
+    transition: var(--transition);
+  }
+  .search-input:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.1) !important;
+    width: 100%;
+  }
+
+  /* Animation for alerts */
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-slide-in {
+    animation: slideIn 0.3s ease-out forwards;
+  }
+`;
+
+const API_URL = "http://localhost:5000/umusanzu-ejoheza";
+
+// -----------------------------------------------------------------------------
+// COMPONENT
+// -----------------------------------------------------------------------------
 export default function UmusanzuEjoheza() {
-  const [form, setForm] = useState({
-    umuturage: "",
-    amafaranga: "",
-    itariki: "",
-    // user_id removed from state
-  });
-
   const [records, setRecords] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filterRange, setFilterRange] = useState("all");
+  const [form, setForm] = useState({ umuturage: "", amafaranga: "", itariki: "" });
+  const [editId, setEditId] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState({ show: false, message: "", type: "" });
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const [selectedRecord, setSelectedRecord] = useState(null);
-  const [showDetailModal, setShowDetailModal] = useState(false);
-
-  // Inject modern styles (Green Theme)
+  // Inject Styles
   useEffect(() => {
-    const id = "umusanzu-ejoheza-modern-ui";
-    if (document.getElementById(id)) return;
-    const css = `
-      .ejoheza-page { background: radial-gradient(circle at top left, #bbf7d0 0, #ecfeff 32%, #ffffff 100%); }
-      .modern-card { border-radius: 22px; border: none !important; background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(10px); box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08); transition: all 0.25s ease; }
-      .modern-card:hover { transform: translateY(-3px); box-shadow: 0 26px 65px rgba(15, 23, 42, 0.14); }
-      .gradient-card-success { background: linear-gradient(135deg, #16a34a 0%, #22c55e 45%, #14b8a6 100%); color: #ecfdf5; }
-      .header-icon { background: radial-gradient(circle at 30% 20%, #bbf7d0 0, #dcfce7 55%, #f0fdf4 100%); }
-      .btn-gradient-success { background: linear-gradient(135deg, #22c55e 0%, #14b8a6 60%); border: none; color: #ecfdf5; box-shadow: 0 14px 32px rgba(34, 197, 94, 0.35); transition: all 0.25s ease; }
-      .modern-input { border-radius: 16px !important; border: 1px solid rgba(148, 163, 184, 0.5) !important; background: #f9fafb !important; }
-      .modern-input:focus { border-color: #22c55e !important; background: #ffffff !important; }
-      .table-modern tbody tr { transition: all 0.18s ease; }
-      .table-modern tbody tr:hover { background: rgba(240, 253, 250, 0.98); transform: translateY(-1px); }
-      .avatar-soft { box-shadow: 0 8px 18px rgba(16, 185, 129, 0.35); }
-      .modern-modal { border-radius: 24px; }
-    `;
-    const style = document.createElement("style");
-    style.id = id;
-    style.innerHTML = css;
-    document.head.appendChild(style);
+    const styleSheet = document.createElement("style");
+    styleSheet.innerText = modernStyles;
+    document.head.appendChild(styleSheet);
+    return () => document.head.removeChild(styleSheet);
   }, []);
 
-  // Fetch records (Backend uses req.user.id automatically)
-  const fetchRecords = async () => {
+  // Helper: Show Alert
+  const showAlert = (message, type = "success") => {
+    setAlert({ show: true, message, type });
+    setTimeout(() => setAlert({ show: false, message: "", type: "" }), 4000);
+  };
+
+  // Helper: Get Auth Headers
+  const getAuthConfig = () => ({
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  });
+
+  // Fetch Data
+  const fetchData = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
-      // Ensure axios is sending credentials if using cookies/sessions
-      // axios.defaults.withCredentials = true; 
-      const res = await axios.get(API_URL);
-      setRecords(res.data || []);
-    } catch (err) {
-      console.error("Fetch error:", err);
-      showNotification("Habaye ikibazo mu gushaka amakuru.", "danger");
+      const res = await axios.get(API_URL, getAuthConfig());
+      setRecords(res.data);
+    } catch (error) {
+      console.error(error);
+      if (error.response?.status === 403 || error.response?.status === 401) {
+        showAlert("Session yarangiye. Ongera winjire.", "danger");
+      }
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchRecords();
-  }, []);
+  useEffect(() => { fetchData(); }, []);
 
-  const showNotification = (message, type = "success") => {
-    setAlert({ show: true, message, type });
-    setTimeout(() => setAlert({ show: false, message: "", type: "" }), 4000);
-  };
-
-  const formatRWF = (amount) => {
-    const num = Number(amount || 0);
-    return new Intl.NumberFormat("rw-RW", { style: "currency", currency: "RWF" }).format(num);
-  };
-
-  const totalSavings = records.reduce((acc, curr) => acc + Number(curr.amafaranga || 0), 0);
-  const totalContributors = records.length;
-
+  // Handle Input Change
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  // Handle Form Submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitting(true);
+    setLoading(true);
     try {
-      // Backend automatically attaches user_id
-      await axios.post(API_URL, form);
+      if (editId) {
+        await axios.put(`${API_URL}/${editId}`, form, getAuthConfig());
+        showAlert("Byavuguruwe neza!", "success");
+      } else {
+        await axios.post(API_URL, form, getAuthConfig());
+        showAlert("Byanditswe neza!", "success");
+      }
       setForm({ umuturage: "", amafaranga: "", itariki: "" });
-      fetchRecords();
-      showNotification("Ubwizigame bwabitswe neza!", "success");
-    } catch (err) {
-      console.error("Save error:", err);
-      showNotification("Ntibyakunze kubika.", "danger");
+      setEditId(null);
+      fetchData();
+    } catch (error) {
+      console.error("Error saving data:", error);
+      showAlert("Habaye ikibazo. Gerageza nanone.", "danger");
     } finally {
-      setSubmitting(false);
+      setLoading(false);
     }
   };
 
-  const filteredRecords = records.filter((record) => {
-    const name = (record.umuturage || "").toLowerCase();
-    const q = searchTerm.toLowerCase();
-    if (q && !name.includes(q)) return false;
-    if (!record.itariki) return filterRange === "all";
-    
-    const recDate = new Date(record.itariki);
-    const today = new Date();
-    const isSameDay = (d1, d2) => d1.toDateString() === d2.toDateString();
-    const isSameMonth = (d1, d2) => d1.getMonth() === d2.getMonth() && d1.getFullYear() === d2.getFullYear();
+  // Handle Edit Click
+  const handleEdit = (row) => {
+    setForm({ umuturage: row.umuturage, amafaranga: row.amafaranga, itariki: row.itariki });
+    setEditId(row.id);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
-    if (filterRange === "today") return isSameDay(recDate, today);
-    if (filterRange === "month") return isSameMonth(recDate, today);
-    return true;
-  });
+  // Handle Delete Click
+  const handleDelete = async (id) => {
+    if (!window.confirm("Urashaka gusiba uyu musanzu burundu?")) return;
+    try {
+      await axios.delete(`${API_URL}/${id}`, getAuthConfig());
+      showAlert("Byasibwe neza!", "warning");
+      fetchData();
+    } catch (error) {
+      console.error(error);
+      showAlert("Ntibyasibwe.", "danger");
+    }
+  };
 
-  const openDetailModal = (record) => { setSelectedRecord(record); setShowDetailModal(true); };
-  const closeDetailModal = () => { setSelectedRecord(null); setShowDetailModal(false); };
+  // Filter records based on search term
+  const filteredRecords = records.filter(record => 
+    record.umuturage.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    record.amafaranga.toString().includes(searchTerm)
+  );
 
   return (
-    <div className="ejoheza-page container-fluid py-4 min-vh-100">
-      <div className="row justify-content-center">
-        <div className="col-12 col-xl-11 ejoheza-shell">
-          
-          {/* Header & Stats */}
-          <div className="row mb-4 align-items-center g-3">
-            <div className="col-md-7">
-              <div className="modern-card p-3 d-flex align-items-center">
-                <div className="header-icon p-3 rounded-circle text-success me-3 d-flex align-items-center justify-content-center">
-                  <i className="bi bi-piggy-bank-fill fs-3"></i>
-                </div>
-                <div>
-                  <h2 className="fw-bold mb-0 text-dark">Ejo Heza</h2>
-                  <p className="text-muted mb-0 small">Gucunga ubwizigame bw'igihe kirekire.</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-5">
-              <div className="modern-card gradient-card-success h-100">
-                <div className="card-body p-3 d-flex flex-column justify-content-between">
-                  <span className="text-subtle text-uppercase fw-semibold small">Ubwizigame Bwose</span>
-                  <h4 className="fw-bold mb-1">{formatRWF(totalSavings)}</h4>
-                </div>
-              </div>
-            </div>
-          </div>
+    <div className="min-vh-100 d-flex flex-column" style={{ background: "linear-gradient(to bottom right, #f0fdf4, #e0f2fe)" }}>
+      <div className="container py-5 flex-grow-1">
+        <div className="row justify-content-center">
+          <div className="col-12 col-xl-10">
 
-          {/* Alert */}
-          {alert.show && (
-            <div className={`alert alert-${alert.type} alert-dismissible fade show rounded-3 border-0 shadow-sm mb-4`} role="alert">
-              <i className={`bi ${alert.type === "success" ? "bi-check-circle-fill" : "bi-exclamation-octagon-fill"} me-2`}></i>
-              {alert.message}
+            {/* HEADER */}
+            <div className="text-center mb-5 animate-slide-in">
+              <div className="d-inline-flex align-items-center justify-content-center p-3 mb-3 bg-white rounded-circle shadow-sm">
+                <i className="bi bi-piggy-bank text-success" style={{ fontSize: "2.5rem" }}></i>
+              </div>
+              <h1 className="fw-bold text-gray-800 mb-2">Umusanzu Ejo Heza</h1>
+              <p className="text-muted fs-5">Kuzigama no kwiteganyiriza ejo hazaza heza.</p>
             </div>
-          )}
 
-          <div className="row g-4">
-            {/* Form */}
-            <div className="col-lg-4">
-              <div className="modern-card h-100">
-                <div className="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
-                  <h5 className="card-title fw-bold mb-0 text-success"><i className="bi bi-plus-lg me-2"></i> Andika Ubwizigame</h5>
-                  <button className="btn btn-sm btn-outline-secondary rounded-pill" onClick={fetchRecords} disabled={loading}><i className="bi bi-arrow-clockwise"></i></button>
+            {/* ALERT NOTIFICATION */}
+            {alert.show && (
+              <div className={`alert alert-${alert.type} border-0 shadow-sm rounded-4 d-flex align-items-center mb-4 animate-slide-in`}>
+                <i className={`bi bi-${alert.type === "success" ? "check-circle-fill" : "exclamation-triangle-fill"} fs-4 me-3`}></i>
+                <div className="fw-medium">{alert.message}</div>
+                <button type="button" className="btn-close ms-auto" onClick={() => setAlert({ ...alert, show: false })}></button>
+              </div>
+            )}
+
+            {/* INPUT FORM CARD */}
+            <div className="glass-card mb-5 p-4 p-md-5">
+              <div className="d-flex align-items-center justify-content-between mb-4">
+                <h4 className="fw-bold text-success m-0">
+                  <i className={`bi bi-${editId ? "pencil-square" : "plus-circle"} me-2`}></i>
+                  {editId ? "Hindura Umusanzu" : "Ongeraho Umusanzu Mushya"}
+                </h4>
+              </div>
+
+              <form onSubmit={handleSubmit}>
+                <div className="row g-4">
+                  <div className="col-md-5">
+                    <label className="form-label fw-semibold text-gray-600 small text-uppercase">Amazina</label>
+                    <div className="input-group">
+                      <span className="input-group-text bg-transparent border-end-0 ps-3 text-muted">
+                        <i className="bi bi-person"></i>
+                      </span>
+                      <input
+                        type="text"
+                        name="umuturage"
+                        className="form-control border-start-0 ps-0"
+                        placeholder="Urugero: Kalisa Jean"
+                        value={form.umuturage}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="col-md-4">
+                    <label className="form-label fw-semibold text-gray-600 small text-uppercase">Amafaranga (RWF)</label>
+                    <div className="input-group">
+                      <span className="input-group-text bg-transparent border-end-0 ps-3 text-muted">
+                        <i className="bi bi-cash-stack"></i>
+                      </span>
+                      <input
+                        type="number"
+                        name="amafaranga"
+                        className="form-control border-start-0 ps-0"
+                        placeholder="0"
+                        value={form.amafaranga}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="col-md-3">
+                    <label className="form-label fw-semibold text-gray-600 small text-uppercase">Itariki</label>
+                    <input
+                      type="date"
+                      name="itariki"
+                      className="form-control"
+                      value={form.itariki}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
                 </div>
-                <div className="card-body p-4">
-                  <form onSubmit={handleSubmit}>
-                    <div className="form-floating mb-3">
-                      <input type="text" className="form-control modern-input" id="umuturage" name="umuturage" placeholder="Izina" value={form.umuturage} onChange={handleChange} required />
-                      <label htmlFor="umuturage">Izina ry'Umuturage</label>
-                    </div>
-                    <div className="form-floating mb-3">
-                      <input type="number" className="form-control modern-input" id="amafaranga" name="amafaranga" placeholder="Amount" value={form.amafaranga} onChange={handleChange} required />
-                      <label htmlFor="amafaranga">Amafaranga (RWF)</label>
-                    </div>
-                    <div className="form-floating mb-4">
-                      <input type="date" className="form-control modern-input" id="itariki" name="itariki" value={form.itariki} onChange={handleChange} required />
-                      <label htmlFor="itariki">Itariki</label>
-                    </div>
-                    <button type="submit" className="btn btn-gradient-success w-100 py-3 rounded-3 fw-bold" disabled={submitting}>
-                      {submitting ? "Bireme..." : "Bika Ubwizigame"}
+
+                <div className="d-flex justify-content-end gap-3 mt-4 pt-2">
+                  {editId && (
+                    <button
+                      type="button"
+                      className="btn btn-modern btn-light text-muted"
+                      onClick={() => {
+                        setEditId(null);
+                        setForm({ umuturage: "", amafaranga: "", itariki: "" });
+                      }}
+                    >
+                      Bireke
                     </button>
-                  </form>
+                  )}
+                  <button
+                    type="submit"
+                    className="btn btn-modern btn-success-gradient px-5"
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <>
+                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        <span>Bitegereje...</span>
+                      </>
+                    ) : (
+                      <>
+                        <i className={`bi bi-${editId ? "check2" : "save"}`}></i>
+                        <span>{editId ? "Emeza" : "Bika"}</span>
+                      </>
+                    )}
+                  </button>
                 </div>
-              </div>
+              </form>
             </div>
 
-            {/* List */}
-            <div className="col-lg-8">
-              <div className="modern-card h-100">
-                <div className="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center gap-3">
-                  <h5 className="card-title fw-bold mb-0 text-dark">Raporo</h5>
-                  <div className="input-group glass-input" style={{ maxWidth: "200px" }}>
-                    <span className="input-group-text border-0"><i className="bi bi-search text-muted"></i></span>
-                    <input type="text" className="form-control border-0" placeholder="Shakisha..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-                  </div>
+            {/* DATA TABLE CARD */}
+            <div className="glass-card overflow-hidden">
+              <div className="p-4 p-md-5 border-bottom border-light d-flex flex-wrap justify-content-between align-items-center bg-white bg-opacity-50 gap-3">
+                <div className="d-flex align-items-center gap-3">
+                  <h5 className="fw-bold text-gray-800 m-0">Urutonde rw'Imisanzu</h5>
+                  <span className="badge badge-modern bg-success bg-opacity-10 text-success">
+                    Total: {filteredRecords.length}
+                  </span>
                 </div>
-                <div className="card-body p-0">
-                  <div className="table-responsive">
-                    <table className="table table-hover table-modern align-middle mb-0">
-                      <thead className="bg-light">
-                        <tr>
-                          <th className="ps-4 border-0 py-3">Umuturage</th>
-                          <th className="border-0 py-3">Amafaranga</th>
-                          <th className="border-0 py-3">Itariki</th>
-                          <th className="text-center border-0 py-3">Ibindi</th>
+
+                {/* Search Input */}
+                <div className="search-wrapper">
+                  <i className="bi bi-search search-icon"></i>
+                  <input
+                    type="text"
+                    className="form-control search-input"
+                    placeholder="Shakisha umuturage..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div className="table-responsive">
+                {filteredRecords.length > 0 ? (
+                  <table className="table-modern">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Umuturage</th>
+                        <th>Amafaranga</th>
+                        <th>Itariki</th>
+                        <th className="text-end pe-4">Ibikorwa</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredRecords.map((r, i) => (
+                        <tr key={r.id}>
+                          <td className="fw-bold text-muted ps-4">{i + 1}</td>
+                          <td>
+                            <div className="d-flex align-items-center">
+                              <div className="avatar-circle me-3">
+                                {r.umuturage.charAt(0).toUpperCase()}
+                              </div>
+                              <span className="fw-semibold text-gray-800">{r.umuturage}</span>
+                            </div>
+                          </td>
+                          <td>
+                            <span className="badge badge-modern bg-green-100 text-green-800" 
+                                  style={{backgroundColor: '#dcfce7', color: '#166534'}}>
+                              {parseInt(r.amafaranga).toLocaleString()} RWF
+                            </span>
+                          </td>
+                          <td className="text-muted">
+                            <i className="bi bi-calendar3 me-2 opacity-50"></i>
+                            {new Date(r.itariki).toLocaleDateString("rw-RW")}
+                          </td>
+                          <td className="text-end pe-4">
+                            <button
+                              className="action-btn edit me-2"
+                              onClick={() => handleEdit(r)}
+                              title="Hindura"
+                            >
+                              <i className="bi bi-pencil-fill"></i>
+                            </button>
+                            <button
+                              className="action-btn delete"
+                              onClick={() => handleDelete(r.id)}
+                              title="Siba"
+                            >
+                              <i className="bi bi-trash-fill"></i>
+                            </button>
+                          </td>
                         </tr>
-                      </thead>
-                      <tbody>
-                        {loading ? <tr><td colSpan="4" className="text-center py-5">Loading...</td></tr> : 
-                         filteredRecords.map((row) => (
-                          <tr key={row.id} onClick={() => openDetailModal(row)} style={{ cursor: "pointer" }}>
-                            <td className="ps-4 fw-bold text-dark">{row.umuturage}</td>
-                            <td className="fw-bold text-success">{formatRWF(row.amafaranga)}</td>
-                            <td><span className="badge rounded-pill bg-light text-dark border fw-normal">{new Date(row.itariki).toLocaleDateString('rw-RW')}</span></td>
-                            <td className="text-center"><button className="btn btn-sm btn-light rounded-circle"><i className="bi bi-eye"></i></button></td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                      ))}
+                    </tbody>
+                  </table>
+                ) : (
+                  <div className="empty-state">
+                    <i className="bi bi-inbox empty-state-icon"></i>
+                    <h5 className="fw-bold text-gray-700">
+                      {searchTerm ? "Nta gisubizo kibonetse" : "Nta musanzu uraboneka"}
+                    </h5>
+                    <p className="text-muted">
+                      {searchTerm ? "Gerageza gushakisha irindi zina." : "Tangira wandika umusanzu wa mbere hejuru."}
+                    </p>
                   </div>
-                </div>
+                )}
               </div>
             </div>
-          </div>
 
-          {/* Modal */}
-          {showDetailModal && selectedRecord && (
-            <div className="modal fade show d-block" style={{ backgroundColor: "rgba(0,0,0,0.45)" }} onClick={(e) => e.target.classList.contains("modal") && closeDetailModal()}>
-              <div className="modal-dialog modal-dialog-centered">
-                <div className="modal-content modern-modal border-0 p-4 text-center">
-                  <div className="avatar-soft rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center fw-bold" style={{ width: 80, height: 80, fontSize: "2rem" }}>
-                    {selectedRecord.umuturage.charAt(0).toUpperCase()}
-                  </div>
-                  <h3 className="fw-bold mb-4">{selectedRecord.umuturage}</h3>
-                  <div className="bg-light p-3 rounded-3 mb-3 d-flex justify-content-between">
-                    <span>Amafaranga:</span> <span className="fw-bold text-success">{formatRWF(selectedRecord.amafaranga)}</span>
-                  </div>
-                  <button className="btn btn-secondary w-100 rounded-pill" onClick={closeDetailModal}>Funga</button>
-                </div>
-              </div>
-            </div>
-          )}
+          </div>
         </div>
       </div>
     </div>

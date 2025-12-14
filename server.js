@@ -160,89 +160,109 @@ app.get("/message", (req, res) => {
 });
 
 
+////////// EFP TABLE  IMISANZU
 
 
+/* ================= UMUSANZU FPR ================= */
 
+/* ================= UMUSANZU FPR ================= */
+////////// EFP TABLE IMISANZU
 
-// ===== UMUSANZU EJO HEZA ENDPOINTS =====
+/* ================= UMUSANZU FPR ================= */
 
-// Create a new Ejo Heza contribution for the CURRENTLY LOGGED-IN user
-// POST /umusanzu_ejoheza
-app.post("/umusanzu_ejoheza", (req, res) => {
+// CREATE
+app.post("/umusanzu-fpr", (req, res) => {
   const { umuturage, amafaranga, itariki } = req.body;
-  const userId = req.user?.id; // user_id from auth middleware
+  const user_id = req.user.id;
 
-  if (!umuturage || !amafaranga || !itariki) {
-    return res.status(400).json({ error: "Injiza umuturage, amafaranga na itariki." });
-  }
-  if (!userId) {
-    return res.status(401).json({ error: "User not authenticated" });
-  }
+  const sql = "INSERT INTO umusanzu_fpr (umuturage, amafaranga, itariki, user_id) VALUES (?, ?, ?, ?)";
+  db.query(sql, [umuturage, amafaranga, itariki, user_id], (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: "Database error" });
+    }
+    res.json({ message: "Saved", id: result.insertId });
+  });
+});
+
+// READ ALL (Filtered by user)
+app.get("/umusanzu-fpr", (req, res) => {
+  const sql = "SELECT * FROM umusanzu_fpr WHERE user_id = ? ORDER BY id DESC";
+  db.query(sql, [req.user.id], (err, rows) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: "Database error" });
+    }
+    res.json(rows);
+  });
+});
+
+// UPDATE
+app.put("/umusanzu-fpr/:id", (req, res) => {
+  const { umuturage, amafaranga, itariki } = req.body;
+  const sql = "UPDATE umusanzu_fpr SET umuturage=?, amafaranga=?, itariki=? WHERE id=? AND user_id=?";
+  db.query(sql, [umuturage, amafaranga, itariki, req.params.id, req.user.id], (err, result) => {
+    if (err) return res.status(500).json({ error: "Database error" });
+    if (result.affectedRows === 0) return res.status(403).json({ message: "Not allowed" });
+    res.json({ message: "Updated" });
+  });
+});
+
+// DELETE
+app.delete("/umusanzu-fpr/:id", (req, res) => {
+  const sql = "DELETE FROM umusanzu_fpr WHERE id=? AND user_id=?";
+  db.query(sql, [req.params.id, req.user.id], (err, result) => {
+    if (err) return res.status(500).json({ error: "Database error" });
+    if (result.affectedRows === 0) return res.status(403).json({ message: "Not allowed" });
+    res.json({ message: "Deleted" });
+  });
+});
+
+
+/* ================= UMUSANZU EJOHEZA ================= */
+
+// CREATE
+app.post("/umusanzu-ejoheza", (req, res) => {
+  const { umuturage, amafaranga, itariki } = req.body;
+  const user_id = req.user.id;
 
   const sql = "INSERT INTO umusanzu_ejoheza (umuturage, amafaranga, itariki, user_id) VALUES (?, ?, ?, ?)";
-  const values = [umuturage, amafaranga, itariki, userId];
-
-  db.query(sql, values, (err, result) => {
-    if (err) {
-      console.error("DB insert error (umusanzu_ejoheza):", err);
-      return res.status(500).json({ error: "Database error" });
-    }
-    return res.json({ message: "Umusanzu wanditswe neza", id: result.insertId });
+  db.query(sql, [umuturage, amafaranga, itariki, user_id], (err, result) => {
+    if (err) return res.status(500).json({ error: "Database error" });
+    res.json({ message: "Saved", id: result.insertId });
   });
 });
 
-// Get all Ejo Heza contributions for the CURRENTLY LOGGED-IN user
-// GET /umusanzu_ejoheza
-app.get("/umusanzu_ejoheza", (req, res) => {
-  const userId = req.user?.id;
-
-  if (!userId) {
-    return res.status(401).json({ error: "User not authenticated" });
-  }
-
-  const sql = "SELECT id, umuturage, amafaranga, itariki FROM umusanzu_ejoheza WHERE user_id = ? ORDER BY itariki DESC, id DESC";
-
-  db.query(sql, [userId], (err, results) => {
-    if (err) {
-      console.error("DB select error (umusanzu_ejoheza):", err);
-      return res.status(500).json({ error: "Database error" });
-    }
-    res.json(results);
+// READ ALL
+app.get("/umusanzu-ejoheza", (req, res) => {
+  const sql = "SELECT * FROM umusanzu_ejoheza WHERE user_id = ? ORDER BY id DESC";
+  db.query(sql, [req.user.id], (err, rows) => {
+    if (err) return res.status(500).json({ error: "Database error" });
+    res.json(rows);
   });
 });
 
-// Update Ejo Heza record (only if belongs to user)
-// PUT /umusanzu_ejoheza/:id
-app.put("/umusanzu_ejoheza/:id", (req, res) => {
-  const { id } = req.params;
+// UPDATE
+app.put("/umusanzu-ejoheza/:id", (req, res) => {
   const { umuturage, amafaranga, itariki } = req.body;
-  const userId = req.user?.id;
-
-  if (!userId) return res.status(401).json({ error: "User not authenticated" });
-
   const sql = "UPDATE umusanzu_ejoheza SET umuturage=?, amafaranga=?, itariki=? WHERE id=? AND user_id=?";
-  
-  db.query(sql, [umuturage, amafaranga, itariki, id, userId], (err, result) => {
-    if (err) return res.status(500).json({ error: err });
-    if (result.affectedRows === 0) return res.status(403).json({ error: "Ntibyemewe guhindura uyu musanzu" });
-    res.json({ message: "Amakuru yavuguruwe neza!" });
+  db.query(sql, [umuturage, amafaranga, itariki, req.params.id, req.user.id], (err, result) => {
+    if (err) return res.status(500).json({ error: "Database error" });
+    if (result.affectedRows === 0) return res.status(403).json({ message: "Not allowed" });
+    res.json({ message: "Updated" });
   });
 });
 
-// Delete Ejo Heza record (only if belongs to user)
-// DELETE /umusanzu_ejoheza/:id
-app.delete("/umusanzu_ejoheza/:id", (req, res) => {
-  const { id } = req.params;
-  const userId = req.user?.id;
-
-  if (!userId) return res.status(401).json({ error: "User not authenticated" });
-  
-  db.query("DELETE FROM umusanzu_ejoheza WHERE id = ? AND user_id = ?", [id, userId], (err, result) => {
-    if (err) return res.status(500).json({ error: err });
-    if (result.affectedRows === 0) return res.status(403).json({ error: "Ntibyemewe gusiba uyu musanzu" });
-    res.json({ message: "Umusanzu wasibwe neza!" });
+// DELETE
+app.delete("/umusanzu-ejoheza/:id", (req, res) => {
+  const sql = "DELETE FROM umusanzu_ejoheza WHERE id=? AND user_id=?";
+  db.query(sql, [req.params.id, req.user.id], (err, result) => {
+    if (err) return res.status(500).json({ error: "Database error" });
+    if (result.affectedRows === 0) return res.status(403).json({ message: "Not allowed" });
+    res.json({ message: "Deleted" });
   });
 });
+
 // ===== INKUNGA LETA ENDPOINTS =====
 
 // Create a new inkunga for current user
