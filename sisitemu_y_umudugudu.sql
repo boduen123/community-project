@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 12, 2025 at 11:41 AM
+-- Generation Time: Dec 15, 2025 at 02:21 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -92,13 +92,6 @@ CREATE TABLE `abana` (
   `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `abana`
---
-
-INSERT INTO `abana` (`id`, `amazina`, `imyaka`, `igitsina`, `umubyeyi_wa_mwana`, `aderesi`, `aiga`, `created_at`, `user_id`) VALUES
-(1, 'kariza eme ', 2, 'Gore', 'jack', 'karambi', 'Oya', '2025-11-16 12:31:43', NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -118,13 +111,6 @@ CREATE TABLE `abana_barimwo_mirire_mibi` (
   `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `abana_barimwo_mirire_mibi`
---
-
-INSERT INTO `abana_barimwo_mirire_mibi` (`id`, `amazina`, `imyaka`, `igitsina`, `umubyeyi_wa_mwana`, `aderesi`, `urwego_rw_imirire`, `afashijwe`, `created_at`, `user_id`) VALUES
-(1, 'kevin', 2, 'Gore', 'kamanzi eme', 'nyarugenge, mageragere,mataba', 'Bikabije', 'Oya', '2025-11-16 13:35:39', NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -142,13 +128,6 @@ CREATE TABLE `abasheshe_akanguhe` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `abasheshe_akanguhe`
---
-
-INSERT INTO `abasheshe_akanguhe` (`id`, `amazina`, `imyaka`, `igitsina`, `nimero_ya_telephone`, `aderesi`, `ukeneye_ubufasha`, `created_at`, `user_id`) VALUES
-(1, 'asiyeri', 67, 'Gabo', '0798835555', 'karambi', 'Yego', '2025-11-16 12:34:25', NULL);
 
 -- --------------------------------------------------------
 
@@ -172,16 +151,6 @@ CREATE TABLE `abaturage` (
   `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `abaturage`
---
-
-INSERT INTO `abaturage` (`umuturage_id`, `izina_ribanza`, `izina_risoza`, `igitsina`, `itariki_y_amavuko`, `indangamuntu`, `telefone`, `isibo_id`, `urugo_id`, `icyiciro_cy_ubudehe`, `aho_ari`, `igihe_yanditswe`, `user_id`) VALUES
-(6, 'RUCAMUBYUMA ', 'VINCENT', 'Gabo', '1955-12-31', '1195680028285091', '0788255270', NULL, NULL, 'A', 'Ariho', '2025-11-11 05:43:13', NULL),
-(14, 'boduen', 'niyonkuru', 'Gabo', '2025-11-09', '1195680028285093', '0788355366', NULL, NULL, 'A', 'Ariho', '2025-11-13 14:24:23', NULL),
-(15, 'RUCAMUBYUMA ', 'VINCENT', 'Gabo', '2025-12-08', '', '0785549152', NULL, NULL, 'A', 'Ariho', '2025-12-12 10:36:31', NULL),
-(16, 'RUCAMUBYUMA ', 'VINCENT', 'Gabo', '2025-12-08', '1195680028285034', '0785549152', NULL, NULL, 'A', 'Ariho', '2025-12-12 10:38:38', 8);
-
 -- --------------------------------------------------------
 
 --
@@ -198,13 +167,6 @@ CREATE TABLE `abayobozi` (
   `umudugudu` varchar(100) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `abayobozi`
---
-
-INSERT INTO `abayobozi` (`umuyobozi_id`, `amazina_yose`, `telefone`, `inshingano`, `itariki_yatangiye`, `itariki_yarangije`, `umudugudu`, `user_id`) VALUES
-(8, 'ishimwe olive', '0792051387', 'Ushinzwe_Imibereho', '2025-11-10', '2025-11-10', 'karambi', NULL);
 
 -- --------------------------------------------------------
 
@@ -223,13 +185,6 @@ CREATE TABLE `documents` (
   `uploaded_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `documents`
---
-
-INSERT INTO `documents` (`id`, `title`, `description`, `file_name`, `file_path`, `file_type`, `uploaded_by`, `uploaded_at`, `user_id`) VALUES
-(1, 'mmm', 'nn', '', 'nnn', 'nnnn', ' nnnnn', '2025-11-25 08:37:06', NULL);
 
 -- --------------------------------------------------------
 
@@ -265,14 +220,6 @@ CREATE TABLE `imibereho_myiza` (
   `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `imibereho_myiza`
---
-
-INSERT INTO `imibereho_myiza` (`imibereho_id`, `umuturage_id`, `gahunda_yafashwemo`, `ibisobanuro`, `itariki_yatangiranye`, `imiterere_yayo`, `amazina_y_umuturage`, `user_id`) VALUES
-(31, '112223333444555577', 'kurwanya imirire mibi', 'ingamba kurwanya imirire mibi', '2025-11-18', 'Iri_gukorwa', 'boduen', NULL),
-(32, '112223333444555577', 'kurwanya imirire mibi', 'nnnnnn', '2025-11-18', 'Yarangiye', 'boduen', NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -296,13 +243,6 @@ CREATE TABLE `ingo` (
   `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `ingo`
---
-
-INSERT INTO `ingo` (`urugo_id`, `umukuru_w_urugo`, `umubare_w_abagize`, `aho_batuye`, `ubwoko_bw_inzu`, `bafite_amazi`, `bafite_umuyoboro_wamashanyarazi`, `icyiciro_cy_ubudehe`, `umudugudu`, `akagari`, `umurenge`, `akarere`, `igihe_yanditswe`, `user_id`) VALUES
-(17, 'Mbanzabugabo celestin', 7, 'karambi', 'Iyabo', NULL, NULL, 'A', 'karambi', 'mataba', 'mageragere', 'nyarugenge', '2025-11-16 10:21:39', NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -317,6 +257,14 @@ CREATE TABLE `inkunga_leta` (
   `itariki` date NOT NULL,
   `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `inkunga_leta`
+--
+
+INSERT INTO `inkunga_leta` (`id`, `umuturage`, `ubwoko`, `amount`, `itariki`, `user_id`) VALUES
+(1, 'aaaa', 'aa', 1, '2025-12-30', 10),
+(2, 'aaaa', 'aa', 1, '2025-12-30', 17);
 
 -- --------------------------------------------------------
 
@@ -344,6 +292,16 @@ CREATE TABLE `message` (
   `text_user` text NOT NULL,
   `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `message`
+--
+
+INSERT INTO `message` (`id`, `text_user`, `user_id`) VALUES
+(6, 'nnnnnn', 16),
+(7, 'hhhh', 17),
+(8, 'hhhhhhhhhhhhhhh', 24),
+(9, 'boduee aratunaniye', 25);
 
 -- --------------------------------------------------------
 
@@ -384,14 +342,6 @@ CREATE TABLE `ubukungu` (
   `uburezi` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `ubukungu`
---
-
-INSERT INTO `ubukungu` (`ubukungu_id`, `umuturage_id`, `umurimo`, `aho_akorera`, `inkomoko_y_amafaranga`, `afite_ubutaka`, `afite_amatungo`, `afite_konti_yo_kuzigama`, `amazina_y_umuturage`, `user_id`, `uburezi`) VALUES
-(26, 2147483647, 'ubwubatsi', 'naho', 'ibiraka', 1, 1, 1, 'mmmm', NULL, NULL),
-(27, 2147483647, 'ubwubatsi', 'naho', 'ubuhinzi', 1, 0, 1, 'boduen', NULL, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -406,13 +356,6 @@ CREATE TABLE `uburezi` (
   `amazina_y_umuturage` varchar(255) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `uburezi`
---
-
-INSERT INTO `uburezi` (`uburezi_id`, `urwego_rw_amashuri`, `umwuga`, `ishuri_yizemo`, `amazina_y_umuturage`, `user_id`) VALUES
-(12, 'Abanza', 'ubwubatsi', 'burema', 'boduen', NULL);
 
 -- --------------------------------------------------------
 
@@ -446,6 +389,13 @@ CREATE TABLE `umusanzu_ejoheza` (
   `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `umusanzu_ejoheza`
+--
+
+INSERT INTO `umusanzu_ejoheza` (`id`, `umuturage`, `amafaranga`, `itariki`, `user_id`) VALUES
+(1, 'boduen', 200, '2025-12-15', 24);
+
 -- --------------------------------------------------------
 
 --
@@ -459,6 +409,13 @@ CREATE TABLE `umusanzu_fpr` (
   `itariki` date NOT NULL,
   `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `umusanzu_fpr`
+--
+
+INSERT INTO `umusanzu_fpr` (`id`, `umuturage`, `amafaranga`, `itariki`, `user_id`) VALUES
+(19, 'boduen', 2000, '2025-12-16', 24);
 
 -- --------------------------------------------------------
 
@@ -480,13 +437,6 @@ CREATE TABLE `urubyiruko` (
   `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `urubyiruko`
---
-
-INSERT INTO `urubyiruko` (`id`, `amazina`, `imyaka`, `igitsina`, `umurimo`, `nimero_ya_telephone`, `aderesi`, `id_number`, `status`, `created_at`, `user_id`) VALUES
-(2, 'niyonkuru boduen', 20, 'Gabo', 'software development', '0792652471', 'mukarambi', '1222333333333333', 'Rufite akazi', '2025-11-16 12:26:46', NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -506,13 +456,6 @@ CREATE TABLE `urubyiruko_rudafite_akazi` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `urubyiruko_rudafite_akazi`
---
-
-INSERT INTO `urubyiruko_rudafite_akazi` (`id`, `amazina`, `imyaka`, `igitsina`, `aderesi`, `nimero_ya_telephone`, `impamvu_yubushomeri`, `yigeze_kora`, `yifuza_umurimo_mwene`, `created_at`, `user_id`) VALUES
-(1, 'nn', 22, 'Gabo', 'nyarugenge ', '0798866554', 'hhhh', 'Yego', 'Ubuhinzi', '2025-11-16 13:25:14', NULL);
 
 -- --------------------------------------------------------
 
@@ -555,8 +498,12 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `national_id`, `fullname`, `email`, `telefone`, `password`, `role`, `created_at`) VALUES
-(8, '1234567890123456', 'boduen', 'boduen@gmail.com', '0792652471', '$2b$10$vOy.U6A47NyUIvOmXvLVVeAyCbp4uxDrXFlshUq3Jv4bPkVb3bTfC', 'Mudugudu', '2025-12-12 10:37:29'),
-(9, '1123456789009876', 'king boneri', 'niyonkuruboduensun@gmail.com', '0792652467', '$2b$10$vcpgrBiSVURBAQ4ofod7aeYkmsu3GibnvwSrIkd6C6bZGnSH7iQ5a', 'Mudugudu', '2025-12-12 10:39:55');
+(10, '1234567890123456', 'king boneri', 'niyonkuruboduensun@gmail.com', '0792652467', '$2b$10$u2Xg8cLh4dqiziJjcpTBIuXtt1Yp/S85Os/OylVkqqARIn8cvadSu', 'Mudugudu', '2025-12-12 15:12:48'),
+(16, '1234567823456789', 'kkkk', 'mugishahirwa@gmail.com', '0792652471', '$2b$10$IKN5L/Be/4.Eulcpug27zO4WCFUTIT87cbQ1ljOqDGvVDj14PTTmu', 'Mudugudu', '2025-12-13 08:49:57'),
+(17, '1234567890456789', 'hhh', 'kalisa@gmail.com', '0788255270', '$2b$10$1sGj9PzlE.03BFrpV1s67eO4nT5nSM11iHhIabh5gTGJgltjS9Dwi', 'Mudugudu', '2025-12-13 09:09:35'),
+(23, '1111345678904564', 'kamariza', 'kamariza@gmail.com', '0782997777', '$2b$10$O7aQfOTrmE2W6vuEfHO5hu0k/L3le/yTmRc9bYULG2WDdKaOGVtuu', 'Bohejuru', '2025-12-13 09:48:53'),
+(24, '1209876543212345', 'kampire', 'kampire@gmail.com', '0798765234', '$2b$10$kwLu/S5r7eUqrF.TX5cdY.uBFlxXgZerUC3Eva9JIav674Dat4h6e', 'Mudugudu', '2025-12-14 16:28:46'),
+(25, '1198700098756345', 'karinganire', 'karinganire@gmail.com', '0793067890', '$2b$10$EfIehsN.iPleOc90dy8SEuOtIiRgioyqLYKtbKoZZG1IixDWHnBXu', 'Mudugudu', '2025-12-15 11:30:40');
 
 --
 -- Indexes for dumped tables
@@ -751,13 +698,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `abagore_batwite`
 --
 ALTER TABLE `abagore_batwite`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `abakobwa_babyaye`
 --
 ALTER TABLE `abakobwa_babyaye`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `abakoresha`
@@ -769,37 +716,37 @@ ALTER TABLE `abakoresha`
 -- AUTO_INCREMENT for table `abana`
 --
 ALTER TABLE `abana`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `abana_barimwo_mirire_mibi`
 --
 ALTER TABLE `abana_barimwo_mirire_mibi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `abasheshe_akanguhe`
 --
 ALTER TABLE `abasheshe_akanguhe`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `abaturage`
 --
 ALTER TABLE `abaturage`
-  MODIFY `umuturage_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `umuturage_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `abayobozi`
 --
 ALTER TABLE `abayobozi`
-  MODIFY `umuyobozi_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `umuyobozi_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `documents`
 --
 ALTER TABLE `documents`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `ibikorwa`
@@ -811,31 +758,31 @@ ALTER TABLE `ibikorwa`
 -- AUTO_INCREMENT for table `imibereho_myiza`
 --
 ALTER TABLE `imibereho_myiza`
-  MODIFY `imibereho_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `imibereho_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `ingo`
 --
 ALTER TABLE `ingo`
-  MODIFY `urugo_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `urugo_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `inkunga_leta`
 --
 ALTER TABLE `inkunga_leta`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `isibo`
 --
 ALTER TABLE `isibo`
-  MODIFY `isibo_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `isibo_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `message`
 --
 ALTER TABLE `message`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `raporo`
@@ -847,55 +794,55 @@ ALTER TABLE `raporo`
 -- AUTO_INCREMENT for table `ubukungu`
 --
 ALTER TABLE `ubukungu`
-  MODIFY `ubukungu_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ubukungu_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `uburezi`
 --
 ALTER TABLE `uburezi`
-  MODIFY `uburezi_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `uburezi_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `ubuzima`
 --
 ALTER TABLE `ubuzima`
-  MODIFY `ubuzima_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ubuzima_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `umusanzu_ejoheza`
 --
 ALTER TABLE `umusanzu_ejoheza`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `umusanzu_fpr`
 --
 ALTER TABLE `umusanzu_fpr`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `urubyiruko`
 --
 ALTER TABLE `urubyiruko`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `urubyiruko_rudafite_akazi`
 --
 ALTER TABLE `urubyiruko_rudafite_akazi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `urubyiruko_rukora`
 --
 ALTER TABLE `urubyiruko_rukora`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- Constraints for dumped tables
