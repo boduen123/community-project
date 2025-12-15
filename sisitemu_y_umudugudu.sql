@@ -698,37 +698,37 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `abagore_batwite`
 --
 ALTER TABLE `abagore_batwite`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL  AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `abakobwa_babyaye`
 --
 ALTER TABLE `abakobwa_babyaye`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL  AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `abakoresha`
 --
 ALTER TABLE `abakoresha`
-  MODIFY `umukoresha_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `umukoresha_id` int(11) NOT NULL  AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `abana`
 --
 ALTER TABLE `abana`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `abana_barimwo_mirire_mibi`
 --
 ALTER TABLE `abana_barimwo_mirire_mibi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `abasheshe_akanguhe`
 --
 ALTER TABLE `abasheshe_akanguhe`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `abaturage`
@@ -746,7 +746,7 @@ ALTER TABLE `abayobozi`
 -- AUTO_INCREMENT for table `documents`
 --
 ALTER TABLE `documents`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `ibikorwa`
@@ -770,7 +770,7 @@ ALTER TABLE `ingo`
 -- AUTO_INCREMENT for table `inkunga_leta`
 --
 ALTER TABLE `inkunga_leta`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `isibo`
@@ -782,7 +782,7 @@ ALTER TABLE `isibo`
 -- AUTO_INCREMENT for table `message`
 --
 ALTER TABLE `message`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `raporo`
@@ -812,31 +812,31 @@ ALTER TABLE `ubuzima`
 -- AUTO_INCREMENT for table `umusanzu_ejoheza`
 --
 ALTER TABLE `umusanzu_ejoheza`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `umusanzu_fpr`
 --
 ALTER TABLE `umusanzu_fpr`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENt;
 
 --
 -- AUTO_INCREMENT for table `urubyiruko`
 --
 ALTER TABLE `urubyiruko`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `urubyiruko_rudafite_akazi`
 --
 ALTER TABLE `urubyiruko_rudafite_akazi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `urubyiruko_rukora`
 --
 ALTER TABLE `urubyiruko_rukora`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`

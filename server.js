@@ -18,10 +18,10 @@ const JWT_SECRET = "super_secret_token_key";
 // ⚙️ KWIFATANYA NA DATABASE
 // ==========================
 const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "sisitemu_y_umudugudu",
+  host: "sql203.infinityfree.com",
+  user: "if0_40688509",
+  password: "helloPSWD",
+  database: "if0_40688509_sisitemu_y_umudugudu"
 });
 
 db.connect((err) => {
