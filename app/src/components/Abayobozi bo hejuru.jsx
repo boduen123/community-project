@@ -24,6 +24,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 // ===== NEW IMPORT =====
 import Message from "../page/Message"; 
+import RegisterB from "./AddumuyobozBohejuru";
 
 const API_URL = "http://localhost:5000/raporo";
 
@@ -427,6 +428,17 @@ const DashboardBohejuru = () => {
             <Nav.Link 
               active={activeTab === "messages"} 
               onClick={() => setActiveTab("messages")}
+              role="button"
+            >
+              <Icon.ChatDotsFill className="me-2" /> Ubutumwa
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link 
+              active={activeTab === "Andika"} 
+              onClick={() => {
+                setActiveTab("Andika");
+              }}
               role="button"
             >
               <Icon.ChatDotsFill className="me-2" /> Ubutumwa

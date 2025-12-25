@@ -19,9 +19,11 @@ import AbaturageBafiteInkunguzaleta from "./AbaturageBafiteInkunguzaleta";
 // ===== NEW IMPORTS ADDED HERE =====
 import UmusanzuFPR from "./UmusanzuFPR"; 
 import UmusanzuEjoheza from "./UmusanzuEjoheza";
+import RegisterM from "../components/AddumuyobozMudugudu";
+
 
 /* ===== Enhanced Global Styles ===== */
-const GlobalStyles = () => {
+const  GlobalStyles = () => {
   useEffect(() => {
     const id = "umudugudu-dashboard-styles";
     if (document.getElementById(id)) return;
@@ -1108,22 +1110,102 @@ const Dashboard = ({ user }) => {
       content: () => <DashboardOverview user={user} />,
       badge: null,
     },
-    { key: "abaturage", label: "Abaturage", icon: "bi-people-fill", content: () => <Abaturage />, badge: "1234" },
-    { key: "ingo", label: "Ingo", icon: "bi-house-door-fill", content: () => <Ingo />, badge: "456" },
-    { key: "abayobozi", label: "Abayobozi", icon: "bi-person-workspace", content: () => <Abayobozi />, badge: "12" },
-    { key: "raporo", label: "Raporo", icon: "bi-file-earmark-text-fill", content: () => <IbikorwaRaporo />, badge: "89" },
-    { key: "imibereho", label: "Imibereho Myiza", icon: "bi-heart-fill", content: () => <ImiberehoMyiza /> },
-    { key: "isibo", label: "Isibo", icon: "bi-geo-alt-fill", content: () => <Isibo /> },
-    { key: "ubukungu", label: "Ubukungu", icon: "bi-currency-exchange", content: () => <Ubukungu /> },
-    { key: "uburezi", label: "Uburezi", icon: "bi-mortarboard-fill", content: () => <Uburezi /> },
-    { key: "ubuzima", label: "Ubuzima", icon: "bi-heart-pulse-fill", content: () => <Ubuzima /> },
-    { key: "inkunga", label: "Inkunga za Leta", icon: "bi-gift-fill", content: () => <AbaturageBafiteInkunguzaleta /> },
+    {
+      key: "abaturage",
+      label: "Abaturage",
+      icon: "bi-people-fill",
+      content: () => <Abaturage />,
+      badge: "1234",
+    },
+    {
+      key: "ingo",
+      label: "Ingo",
+      icon: "bi-house-door-fill",
+      content: () => <Ingo />,
+      badge: "456",
+    },
+    {
+      key: "abayobozi",
+      label: "Abayobozi",
+      icon: "bi-person-workspace",
+      content: () => <Abayobozi />,
+      badge: "12",
+    },
+    {
+      key: "raporo",
+      label: "Raporo",
+      icon: "bi-file-earmark-text-fill",
+      content: () => <IbikorwaRaporo />,
+      badge: "89",
+    },
+    {
+      key: "imibereho",
+      label: "Imibereho Myiza",
+      icon: "bi-heart-fill",
+      content: () => <ImiberehoMyiza />,
+    },
+    {
+      key: "isibo",
+      label: "Isibo",
+      icon: "bi-geo-alt-fill",
+      content: () => <Isibo />,
+    },
+    {
+      key: "ubukungu",
+      label: "Ubukungu",
+      icon: "bi-currency-exchange",
+      content: () => <Ubukungu />,
+    },
+    {
+      key: "uburezi",
+      label: "Uburezi",
+      icon: "bi-mortarboard-fill",
+      content: () => <Uburezi />,
+    },
+    {
+      key: "ubuzima",
+      label: "Ubuzima",
+      icon: "bi-heart-pulse-fill",
+      content: () => <Ubuzima />,
+    },
+    {
+      key: "inkunga",
+      label: "Inkunga za Leta",
+      icon: "bi-gift-fill",
+      content: () => <AbaturageBafiteInkunguzaleta />,
+    },
     // ===== NAVIGATION ITEMS ADDED =====
-    { key: "umusanzuFPR", label: "Umusanzu FPR", icon: "bi-flag-fill", content: () => <UmusanzuFPR /> },
-    { key: "umusanzuEjoheza", label: "Umusanzu EjoHeza", icon: "bi-piggy-bank-fill", content: () => <UmusanzuEjoheza /> },
+    {
+      key: "umusanzuFPR",
+      label: "Umusanzu FPR",
+      icon: "bi-flag-fill",
+      content: () => <UmusanzuFPR />,
+    },
+    {
+      key: "umusanzuEjoheza",
+      label: "Umusanzu EjoHeza",
+      icon: "bi-piggy-bank-fill",
+      content: () => <UmusanzuEjoheza />,
+    },
     // ==================================
-    { key: "message", label: "Ubutumwa", icon: "bi-chat-dots-fill", content: () => <Message /> },
-    { key: "payment", label: "Kwishyura", icon: "bi-credit-card-2-front-fill", content: () => <PaymentReport /> },
+    {
+      key: "message",
+      label: "Ubutumwa",
+      icon: "bi-chat-dots-fill",
+      content: () => <Message />,
+    },
+    {
+      key: "Umuyobozi",
+      label: "Ongeramo Umuyobozi",
+      icon: "bi-people-fill",
+      content: () => <RegisterM />,
+    },
+    {
+      key: "payment",
+      label: "Kwishyura",
+      icon: "bi-credit-card-2-front-fill",
+      content: () => <PaymentReport />,
+    },
   ];
 
   const selectedTab = tabContent.find((tab) => tab.key === activeTab);

@@ -937,9 +937,6 @@ const Login = () => {
             animate={{ opacity: showForm ? 1 : 0 }}
             transition={{ duration: 0.5, delay: 0.8 }}
           >
-            <p className="text-muted small mb-0">
-              Nta konti ufite? <Link to="/register">Iyandikishe Hano</Link>
-            </p>
           </motion.div>
         </motion.div>
       </motion.div>

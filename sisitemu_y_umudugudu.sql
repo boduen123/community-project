@@ -262,9 +262,7 @@ CREATE TABLE `inkunga_leta` (
 -- Dumping data for table `inkunga_leta`
 --
 
-INSERT INTO `inkunga_leta` (`id`, `umuturage`, `ubwoko`, `amount`, `itariki`, `user_id`) VALUES
-(1, 'aaaa', 'aa', 1, '2025-12-30', 10),
-(2, 'aaaa', 'aa', 1, '2025-12-30', 17);
+
 
 -- --------------------------------------------------------
 
@@ -297,11 +295,6 @@ CREATE TABLE `message` (
 -- Dumping data for table `message`
 --
 
-INSERT INTO `message` (`id`, `text_user`, `user_id`) VALUES
-(6, 'nnnnnn', 16),
-(7, 'hhhh', 17),
-(8, 'hhhhhhhhhhhhhhh', 24),
-(9, 'boduee aratunaniye', 25);
 
 -- --------------------------------------------------------
 
@@ -393,8 +386,6 @@ CREATE TABLE `umusanzu_ejoheza` (
 -- Dumping data for table `umusanzu_ejoheza`
 --
 
-INSERT INTO `umusanzu_ejoheza` (`id`, `umuturage`, `amafaranga`, `itariki`, `user_id`) VALUES
-(1, 'boduen', 200, '2025-12-15', 24);
 
 -- --------------------------------------------------------
 
@@ -414,8 +405,6 @@ CREATE TABLE `umusanzu_fpr` (
 -- Dumping data for table `umusanzu_fpr`
 --
 
-INSERT INTO `umusanzu_fpr` (`id`, `umuturage`, `amafaranga`, `itariki`, `user_id`) VALUES
-(19, 'boduen', 2000, '2025-12-16', 24);
 
 -- --------------------------------------------------------
 
@@ -492,18 +481,6 @@ CREATE TABLE `users` (
   `role` enum('Mudugudu','Isibo','Umunyamabanga','Bohejuru') NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`user_id`, `national_id`, `fullname`, `email`, `telefone`, `password`, `role`, `created_at`) VALUES
-(10, '1234567890123456', 'king boneri', 'niyonkuruboduensun@gmail.com', '0792652467', '$2b$10$u2Xg8cLh4dqiziJjcpTBIuXtt1Yp/S85Os/OylVkqqARIn8cvadSu', 'Mudugudu', '2025-12-12 15:12:48'),
-(16, '1234567823456789', 'kkkk', 'mugishahirwa@gmail.com', '0792652471', '$2b$10$IKN5L/Be/4.Eulcpug27zO4WCFUTIT87cbQ1ljOqDGvVDj14PTTmu', 'Mudugudu', '2025-12-13 08:49:57'),
-(17, '1234567890456789', 'hhh', 'kalisa@gmail.com', '0788255270', '$2b$10$1sGj9PzlE.03BFrpV1s67eO4nT5nSM11iHhIabh5gTGJgltjS9Dwi', 'Mudugudu', '2025-12-13 09:09:35'),
-(23, '1111345678904564', 'kamariza', 'kamariza@gmail.com', '0782997777', '$2b$10$O7aQfOTrmE2W6vuEfHO5hu0k/L3le/yTmRc9bYULG2WDdKaOGVtuu', 'Bohejuru', '2025-12-13 09:48:53'),
-(24, '1209876543212345', 'kampire', 'kampire@gmail.com', '0798765234', '$2b$10$kwLu/S5r7eUqrF.TX5cdY.uBFlxXgZerUC3Eva9JIav674Dat4h6e', 'Mudugudu', '2025-12-14 16:28:46'),
-(25, '1198700098756345', 'karinganire', 'karinganire@gmail.com', '0793067890', '$2b$10$EfIehsN.iPleOc90dy8SEuOtIiRgioyqLYKtbKoZZG1IixDWHnBXu', 'Mudugudu', '2025-12-15 11:30:40');
 
 --
 -- Indexes for dumped tables
@@ -842,7 +819,7 @@ ALTER TABLE `urubyiruko_rukora`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
